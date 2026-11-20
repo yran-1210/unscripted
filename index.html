@@ -103,38 +103,6 @@ textarea:focus-visible {
   font-size: 23px;
 }
 
-.dock {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 7px;
-  padding: 8px 10px;
-  border: 1px solid #ffffff22;
-  border-radius: 17px;
-  background: #ffffff20;
-  backdrop-filter: blur(15px);
-}
-
-.dock span {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: #444653;
-  color: white;
-  font-size: 18px;
-}
-
-.dock span:nth-child(1) { background: #258fd6; }
-.dock span:nth-child(2) { background: #d9dadf; color: #333; }
-.dock span:nth-child(3) { background: #6254bb; }
-.dock span:nth-child(4) { background: #32ae67; }
-.dock span:nth-child(5) { background: #df514b; }
-.dock span:nth-child(6) { background: #a36dd3; }
-
 .window {
   position: absolute;
   z-index: 2;
@@ -855,11 +823,6 @@ textarea:focus-visible {
       <div class="file-icon">▤</div>
       References
     </div>
-  </div>
-
-  <div class="dock">
-    <span>◑</span><span>◉</span><span>✧</span>
-    <span>✉</span><span>♫</span><span>✿</span>
   </div>
 </div>
 
