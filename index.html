@@ -17,7 +17,7 @@
   --input-background: #101010;
   --input-border: rgba(255,255,255,0.18);
   --placeholder: #777;
-  --ambient-color: rgba(255,255,255,0.065);
+  --ambient-color: rgba(255,255,255,0.23);
   --spotlight-center: rgba(255,255,255,0.65);
   --spotlight-edge: rgba(255,255,255,0.18);
 }
@@ -28,7 +28,7 @@ body.light {
   --input-background: #f4f4f4;
   --input-border: rgba(0,0,0,0.16);
   --placeholder: #888;
-  --ambient-color: rgba(0,0,0,0.09);
+  --ambient-color: rgba(0,0,0,0.21);
   --spotlight-center: rgba(0,0,0,0.65);
   --spotlight-edge: rgba(0,0,0,0.18);
 }
@@ -56,12 +56,30 @@ body {
 
 .ambient-character {
   position: absolute;
+  font-family: "Courier New", monospace;
   font-size: 12px;
+  font-weight: 400;
   line-height: 1;
+  letter-spacing: 0.04em;
   color: var(--ambient-color);
-  white-space: pre;
+  white-space: nowrap;
   user-select: none;
+  will-change: transform;
+  animation: floatCode 25s ease-in-out infinite alternate;
   transition: color 350ms ease;
+}
+
+@keyframes floatCode {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(
+      var(--drift-x),
+      var(--drift-y),
+      0
+    );
+  }
 }
 
 main {
@@ -91,7 +109,7 @@ main {
   align-items: baseline;
   align-content: flex-start;
   justify-content: flex-start;
-  font-size: clamp(36px, 5vw, 86px);
+  font-size: clamp(12px, 1.25vw, 22px);
 }
 
 .character {
@@ -204,7 +222,7 @@ main {
   }
 
   #composition {
-    font-size: clamp(32px, 7vw, 58px);
+    font-size: 12px;
   }
 
   #input-area {
@@ -218,11 +236,14 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shape {
+  .shape,
+  .ambient-character {
     animation: none;
   }
 
-  body, #message, #spotlight {
+  body,
+  #message,
+  #spotlight {
     transition: none;
   }
 }
@@ -236,7 +257,10 @@ main {
 
 <main>
   <section id="stage">
-    <div id="composition" aria-label="Generated typography"></div>
+    <div
+      id="composition"
+      aria-label="Generated typography"
+    ></div>
   </section>
 
   <div id="input-area">
@@ -285,7 +309,7 @@ const ambientSymbols =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
   "abcdefghijklmnopqrstuvwxyz" +
   "0123456789" +
-  "@#$%&*+-=/\\!?<>[]{}()";
+  "@#$%&*+-_=/?!<>[]{}";
 
 const random = (min, max) =>
   min + Math.random() * (max - min);
@@ -301,22 +325,52 @@ function createAmbient() {
 
   const fragment = document.createDocumentFragment();
 
-  for (let i = 0; i < 60; i++) {
-    const element = document.createElement("span");
-    const font = pick(fonts);
+  const columns = window.innerWidth < 650 ? 7 : 16;
+  const rows = window.innerWidth < 650 ? 17 : 11;
 
-    element.className = "ambient-character";
-    element.textContent = pick(Array.from(ambientSymbols));
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < columns; x++) {
+      const element = document.createElement("span");
 
-    element.style.left = `${random(2, 98)}%`;
-    element.style.top = `${random(2, 98)}%`;
-    element.style.fontFamily = font.family;
-    element.style.fontWeight = font.weight;
-    element.style.opacity = random(0.4, 1);
-    element.style.transform =
-      `rotate(${random(-25, 25)}deg)`;
+      const length = Math.random() < 0.15
+        ? 1
+        : Math.floor(random(4, 15));
 
-    fragment.appendChild(element);
+      let code = "";
+
+      for (let i = 0; i < length; i++) {
+        code += pick(ambientSymbols);
+      }
+
+      element.className = "ambient-character";
+      element.textContent = code;
+
+      element.style.left =
+        `${((x + random(0.1, 0.85)) / columns) * 100}%`;
+
+      element.style.top =
+        `${((y + random(0.1, 0.85)) / rows) * 100}%`;
+
+      element.style.opacity = random(0.45, 0.90);
+
+      element.style.setProperty(
+        "--drift-x",
+        `${random(-22, 22)}px`
+      );
+
+      element.style.setProperty(
+        "--drift-y",
+        `${random(-20, 20)}px`
+      );
+
+      element.style.animationDuration =
+        `${random(16, 38)}s`;
+
+      element.style.animationDelay =
+        `${random(-30, 0)}s`;
+
+      fragment.appendChild(element);
+    }
   }
 
   ambient.appendChild(fragment);
