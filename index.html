@@ -4,11 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Type Index — Unscripted</title>
+<title>Unscripted Type Lab</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&family=EB+Garamond:wght@400;700&family=IBM+Plex+Mono:wght@400;700&family=Inter:wght@400;700;900&family=Libre+Baskerville:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700;900&family=Raleway:wght@300;700;900&family=Roboto:wght@400;700;900&family=Source+Sans+3:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
@@ -17,298 +16,796 @@
 }
 
 :root {
-  --bg: #050505;
-  --fg: #f1eee8;
-  --muted: #777;
-  --line: #292929;
-  --hover: #161616;
+  --ui: #272729;
+  --ui-dark: #1e1e20;
+  --ui-line: #3b3b3e;
+  --text: #ededee;
+  --muted: #96969a;
+  --accent: #79b4ff;
 }
 
-html {
-  background: var(--bg);
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: Arial, sans-serif;
-}
-
-button,
-a {
-  font: inherit;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 4vw;
-  border-bottom: 1px solid var(--line);
-}
-
-.brand {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-}
-
-.back {
-  font-size: 12px;
-  color: var(--muted);
-  transition: color 0.2s;
-}
-
-.back:hover {
-  color: var(--fg);
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
-  min-height: calc(100vh - 65px);
-}
-
-.sidebar {
-  border-right: 1px solid var(--line);
-  padding: 40px 0;
-}
-
-.label {
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.sidebar-heading {
-  padding: 0 25px 25px;
-}
-
-.font-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.font-item {
-  width: 100%;
-  padding: 18px 25px;
-  display: grid;
-  grid-template-columns: 30px 1fr 22px;
-  align-items: center;
-  gap: 10px;
-  background: transparent;
-  border: 0;
-  border-top: 1px solid var(--line);
-  color: var(--fg);
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.font-item:last-child {
-  border-bottom: 1px solid var(--line);
-}
-
-.font-item:hover,
-.font-item.active {
-  background: var(--hover);
-}
-
-.font-number {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.font-name {
-  font-size: 15px;
-}
-
-.font-arrow {
-  color: var(--muted);
-  text-align: right;
-  font-size: 16px;
-}
-
-.font-item.active .font-arrow {
-  color: var(--fg);
-}
-
-.specimen {
-  min-width: 0;
-  padding: 45px 5vw 100px;
-}
-
-.specimen-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-#font-counter {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.12em;
-}
-
-#font-title {
-  margin: 65px 0 10px;
-  font-size: clamp(36px, 5vw, 78px);
-  font-weight: 400;
-  line-height: 1.1;
-  overflow-wrap: anywhere;
-}
-
-.font-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 30px;
-  margin-top: 22px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.hero-sample {
-  min-height: 240px;
-  display: flex;
-  align-items: center;
-  margin: 40px 0 65px;
+  background: #09090b;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   overflow: hidden;
 }
 
-#hero-letters {
-  font-size: clamp(100px, 15vw, 240px);
-  line-height: 1.15;
-  letter-spacing: -0.06em;
-  overflow-wrap: anywhere;
+button, input, textarea, select {
+  font: inherit;
 }
 
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.weight-button {
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--muted);
-  border-radius: 3px;
-  padding: 9px 13px;
-  font-size: 11px;
+button {
   cursor: pointer;
 }
 
-.weight-button.active {
-  color: var(--bg);
-  background: var(--fg);
-  border-color: var(--fg);
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-.specimen-section {
-  padding: 35px 0 45px;
-  border-top: 1px solid var(--line);
+.desktop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  background:
+    radial-gradient(ellipse at 70% 30%, #323039, transparent 42%),
+    radial-gradient(ellipse at 20% 75%, #1a2530, transparent 45%),
+    #08090b;
 }
 
-.section-heading {
+.os-menu {
+  height: 28px;
+  background: #08080acc;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.section-heading span:last-child {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.sample {
-  margin: 0;
-  font-size: clamp(25px, 3.3vw, 54px);
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.sample.small {
-  font-size: clamp(19px, 2.2vw, 35px);
-  line-height: 1.8;
-}
-
-.sample.sentence {
-  font-size: clamp(28px, 3.8vw, 60px);
-  line-height: 1.4;
-}
-
-#font-description {
-  color: var(--muted);
+  padding: 0 20px;
   font-size: 12px;
-  line-height: 1.8;
-  max-width: 650px;
 }
 
-@media (max-width: 800px) {
-  .layout {
-    grid-template-columns: 1fr;
+.os-menu span {
+  margin-right: 20px;
+}
+
+.desktop-files {
+  position: absolute;
+  right: 25px;
+  top: 65px;
+  display: grid;
+  gap: 25px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.desktop-file {
+  width: 76px;
+}
+
+.file-icon {
+  width: 45px;
+  height: 48px;
+  margin: 0 auto 7px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #363747;
+  border: 1px solid #ffffff22;
+  font-size: 23px;
+}
+
+.dock {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  padding: 8px 10px;
+  border: 1px solid #ffffff22;
+  border-radius: 17px;
+  background: #ffffff20;
+  backdrop-filter: blur(15px);
+}
+
+.dock span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #444653;
+  color: white;
+  font-size: 18px;
+}
+
+.dock span:nth-child(1) { background: #258fd6; }
+.dock span:nth-child(2) { background: #d9dadf; color: #333; }
+.dock span:nth-child(3) { background: #6254bb; }
+.dock span:nth-child(4) { background: #32ae67; }
+.dock span:nth-child(5) { background: #df514b; }
+.dock span:nth-child(6) { background: #a36dd3; }
+
+.window {
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  top: 6%;
+  width: 92%;
+  height: 85%;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  background: var(--ui);
+  border: 1px solid #55545a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 85px #000b;
+}
+
+.titlebar {
+  height: 48px;
+  flex: 0 0 48px;
+  display: grid;
+  grid-template-columns: 110px 1fr 110px;
+  align-items: center;
+  padding: 0 15px;
+  background: linear-gradient(#414143, #313134);
+  border-bottom: 1px solid #1a1a1c;
+}
+
+.traffic {
+  display: flex;
+  gap: 8px;
+}
+
+.traffic span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.traffic span:nth-child(1) { background: #f36b67; }
+.traffic span:nth-child(2) { background: #ecc34f; }
+.traffic span:nth-child(3) { background: #4ac66c; }
+
+.window-title {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.title-tools {
+  justify-self: end;
+  color: #b5b5b9;
+  font-size: 18px;
+}
+
+.workbench {
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr) 260px;
+  min-height: 0;
+  flex: 1;
+}
+
+.sidebar {
+  min-height: 0;
+  overflow: auto;
+  background: #252527;
+  scrollbar-width: thin;
+  scrollbar-color: #505054 transparent;
+}
+
+.sidebar.left {
+  border-right: 1px solid #111;
+}
+
+.sidebar.right {
+  border-left: 1px solid #111;
+}
+
+.panel-title {
+  padding: 15px 14px 12px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+.section-title {
+  padding: 9px 13px;
+  background: #323235;
+  border-top: 1px solid #454548;
+  border-bottom: 1px solid #171719;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.mix-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 14px);
+  margin: 9px 7px;
+  padding: 11px 12px;
+  color: #eee;
+  background: #33353a;
+  border: 1px solid #505057;
+  border-radius: 5px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.mix-button.active {
+  background: #46536a;
+  border-color: #7485a1;
+}
+
+.mix-button small {
+  color: #b5bed0;
+}
+
+.font-row {
+  display: grid;
+  grid-template-columns: 1fr 28px;
+  align-items: center;
+  margin: 2px 7px;
+  border-radius: 5px;
+}
+
+.font-row.active {
+  background: #464d59;
+}
+
+.font-select {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 9px;
+  background: transparent;
+  border: 0;
+  color: #d6d6d8;
+  font-size: 12px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.font-row:hover {
+  background: #3a3b40;
+}
+
+.pool-check {
+  width: 15px;
+  height: 15px;
+  accent-color: #86b8fb;
+  cursor: pointer;
+}
+
+.pool-check:disabled {
+  opacity: .25;
+  cursor: not-allowed;
+}
+
+.category-button {
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 14px);
+  margin: 2px 7px;
+  padding: 9px 11px;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: #c9c9cb;
+  font-size: 12px;
+  text-align: left;
+}
+
+.category-button.active,
+.category-button:hover {
+  background: #404146;
+  color: white;
+}
+
+.category-button small {
+  color: #999;
+}
+
+.workarea {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #08090a;
+}
+
+.tabbar {
+  height: 43px;
+  flex: 0 0 43px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+  background: #242426;
+  border-bottom: 1px solid #39393c;
+}
+
+.tab {
+  padding: 8px 13px;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: #a1a1a5;
+  font-size: 12px;
+}
+
+.tab.active {
+  background: #47474c;
+  color: white;
+}
+
+.tab:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #08090a;
+}
+
+#ambient {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#compose-view,
+#glyph-view,
+#edit-view {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+}
+
+#compose-view.active {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 38px;
+}
+
+.canvas-top {
+  display: flex;
+  justify-content: space-between;
+  color: #9c9da2;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: .07em;
+}
+
+#composition {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: baseline;
+  min-height: 70px;
+  max-height: 65%;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.unit {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: baseline;
+  justify-content: center;
+  height: 1.65em;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.unit:hover {
+  background: #ffffff15;
+}
+
+.unit .shape {
+  display: inline-block;
+  transform-origin: 50% 75%;
+  white-space: pre;
+  line-height: 1.05;
+  user-select: none;
+}
+
+.unit.space {
+  width: .38em;
+  cursor: default;
+}
+
+.unit.break {
+  flex-basis: 100%;
+  height: .3em;
+}
+
+.input-wrap {
+  margin-top: auto;
+}
+
+#type-input {
+  display: block;
+  width: min(520px, 100%);
+  height: 48px;
+  padding: 12px 15px;
+  background: #1b1c1e;
+  border: 1px solid #545458;
+  border-radius: 4px;
+  color: white;
+  resize: none;
+  outline: none;
+  font-size: 13px;
+}
+
+#type-input::placeholder {
+  color: #777;
+}
+
+#type-input:focus {
+  border-color: #9a9da6;
+}
+
+#glyph-view.active {
+  display: flex;
+  flex-direction: column;
+  background: #0d0d0f;
+}
+
+.glyph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid #303033;
+}
+
+.glyph-header h2 {
+  font-size: 18px;
+  font-weight: 450;
+  margin: 0;
+}
+
+.glyph-header span {
+  font-size: 11px;
+  color: #999;
+}
+
+#glyph-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  grid-auto-rows: 105px;
+  align-content: start;
+  overflow: auto;
+}
+
+.glyph-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: #111113;
+  border: 0;
+  border-right: 1px solid #303034;
+  border-bottom: 1px solid #303034;
+  color: #eee;
+}
+
+.glyph-cell:hover {
+  background: #373b44;
+}
+
+.glyph-cell .letter {
+  display: block;
+  font-size: 55px;
+  line-height: 1;
+  transform-origin: center;
+  white-space: nowrap;
+}
+
+.glyph-cell small {
+  position: absolute;
+  left: 9px;
+  bottom: 7px;
+  font-size: 10px;
+  color: #929297;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+#edit-view.active {
+  display: flex;
+  flex-direction: column;
+  background: #f8f8f8;
+  color: #171717;
+}
+
+.edit-toolbar {
+  height: 42px;
+  flex: 0 0 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px;
+  background: #e8e8e8;
+  border-bottom: 1px solid #c9c9c9;
+}
+
+.edit-toolbar span {
+  font-size: 12px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-actions button {
+  border: 1px solid #c6c6c6;
+  border-radius: 4px;
+  background: white;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 11px;
+}
+
+.edit-board {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: #fafafa;
+}
+
+.edit-guides {
+  position: relative;
+  width: 290px;
+  height: 360px;
+  border-left: 1px solid #e4c5a7;
+  border-right: 1px solid #e4c5a7;
+  user-select: none;
+}
+
+.guide {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #dfbb9a;
+  opacity: .85;
+}
+
+.guide.ascender { top: 8%; }
+.guide.cap { top: 20%; }
+.guide.xheight { top: 43%; }
+.guide.baseline { top: 80%; }
+.guide.descender { top: 94%; }
+
+.guide-label {
+  position: absolute;
+  left: 5px;
+  color: #b4a18e;
+  font-size: 9px;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.edit-letter {
+  position: absolute;
+  left: 50%;
+  top: 51%;
+  line-height: 1;
+  white-space: pre;
+  transform-origin: center;
+  color: #2d2d2d;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.edit-letter:active {
+  cursor: grabbing;
+}
+
+.edit-letter.selected {
+  text-shadow: 0 0 0 #222;
+}
+
+.edit-footer {
+  height: 40px;
+  flex: 0 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background: #e5e5e5;
+  border-top: 1px solid #ccc;
+  color: #666;
+  font: 11px "IBM Plex Mono", monospace;
+}
+
+.statusbar {
+  height: 27px;
+  flex: 0 0 27px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 13px;
+  background: #242426;
+  border-top: 1px solid #39393d;
+  color: #999;
+  font: 10px "IBM Plex Mono", monospace;
+}
+
+.scope-control {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 12px;
+}
+
+.scope-button {
+  padding: 9px 5px;
+  background: #343437;
+  border: 1px solid #4d4d51;
+  border-radius: 4px;
+  color: #bdbdc0;
+  font-size: 11px;
+}
+
+.scope-button.active {
+  background: #57667a;
+  border-color: #7c91aa;
+  color: white;
+}
+
+.metric {
+  padding: 10px 15px;
+}
+
+.metric-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 11px;
+  color: #d4d4d6;
+}
+
+.metric output {
+  min-width: 51px;
+  text-align: right;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: #eee;
+  background: #3a3a3d;
+  border: 1px solid #55555a;
+  border-radius: 4px;
+  padding: 4px 5px;
+}
+
+.metric input[type="range"] {
+  width: 100%;
+  appearance: none;
+  background: #57575b;
+  height: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.metric input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  background: #c6c6ca;
+  border: 1px solid #333;
+  border-radius: 50%;
+}
+
+.metric input[type="range"]::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  background: #c6c6ca;
+  border: 1px solid #333;
+  border-radius: 50%;
+}
+
+.action-button {
+  display: block;
+  margin: 12px;
+  padding: 10px;
+  width: calc(100% - 24px);
+  background: #393a3f;
+  border: 1px solid #58595e;
+  border-radius: 4px;
+  color: #ddd;
+  font-size: 11px;
+}
+
+.action-button:hover {
+  background: #4b4d54;
+}
+
+.layer {
+  padding: 11px 14px;
+  font-size: 12px;
+  color: #dadade;
+  background: #343438;
+}
+
+@media(max-width: 1050px) {
+  .workbench {
+    grid-template-columns: 190px minmax(0,1fr) 210px;
+  }
+}
+
+@media(max-width: 700px) {
+  .window {
+    top: 3%;
+    left: 2%;
+    width: 96%;
+    height: 94%;
+    min-height: 0;
   }
 
-  .sidebar {
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    padding: 25px 0 0;
+  .workbench {
+    grid-template-columns: 155px minmax(0,1fr);
+    overflow: auto;
   }
 
-  .font-list {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    padding: 0 15px 15px;
+  .sidebar.right {
+    display: block;
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid #444;
+    max-height: 260px;
   }
 
-  .font-item {
-    width: auto;
-    min-width: 150px;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    border: 1px solid var(--line);
-    margin-right: 8px;
-    padding: 14px;
+  .metric {
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
   }
 
-  .font-item:last-child {
-    border: 1px solid var(--line);
-  }
-
-  .font-arrow {
+  .desktop-files {
     display: none;
   }
 
-  .specimen {
-    padding: 35px 6vw 70px;
+  #compose-view.active {
+    padding: 20px;
   }
 
-  #font-title {
-    margin-top: 40px;
-  }
-
-  .hero-sample {
-    min-height: 170px;
-    margin: 30px 0 45px;
+  .edit-guides {
+    width: 200px;
+    height: 300px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
+@media(prefers-reduced-motion:reduce) {
+  *, *::before, *::after {
+    animation: none !important;
     transition: none !important;
   }
 }
@@ -317,355 +814,882 @@ header {
 
 <body>
 
-<header>
-  <div class="brand">UNSCRIPTED / TYPE INDEX</div>
-  <a class="back" href="./index.html">Back to Unscripted ↗</a>
-</header>
-
-<div class="layout">
-
-  <aside class="sidebar">
-    <div class="sidebar-heading">
-      <div class="label">Typeface Library / 001—010</div>
+<div class="desktop" aria-hidden="true">
+  <div class="os-menu">
+    <div>
+      <span>●</span>
+      <span><strong>Unscripted</strong></span>
+      <span>File</span>
+      <span>Edit</span>
+      <span>Glyph</span>
+      <span>View</span>
     </div>
-    <nav class="font-list" id="font-list" aria-label="Typeface index"></nav>
-  </aside>
+    <div>◈ &nbsp; ◉ &nbsp; ▰</div>
+  </div>
 
-  <main class="specimen">
-
-    <div class="specimen-top">
-      <span class="label">Typeface Specimen</span>
-      <span id="font-counter">01 / 10</span>
+  <div class="desktop-files">
+    <div class="desktop-file">
+      <div class="file-icon">Aa</div>
+      Type Lab
     </div>
-
-    <h1 id="font-title"></h1>
-
-    <div class="font-meta">
-      <span id="font-reference"></span>
-      <span id="font-fallback"></span>
+    <div class="desktop-file">
+      <div class="file-icon">▤</div>
+      References
     </div>
-
-    <div class="hero-sample">
-      <div id="hero-letters">Aa</div>
+    <div class="desktop-file">
+      <div class="file-icon">▣</div>
+      Projects
     </div>
+  </div>
 
-    <div class="section-heading">
-      <span class="label">Font Weight</span>
-      <div class="controls" id="weight-controls"></div>
-    </div>
-
-    <section class="specimen-section">
-      <div class="section-heading">
-        <span class="label">01 / Uppercase</span>
-        <span>A–Z</span>
-      </div>
-      <p class="sample" id="uppercase"></p>
-    </section>
-
-    <section class="specimen-section">
-      <div class="section-heading">
-        <span class="label">02 / Lowercase</span>
-        <span>a–z</span>
-      </div>
-      <p class="sample" id="lowercase"></p>
-    </section>
-
-    <section class="specimen-section">
-      <div class="section-heading">
-        <span class="label">03 / Numerals</span>
-        <span>0–9</span>
-      </div>
-      <p class="sample" id="numerals"></p>
-    </section>
-
-    <section class="specimen-section">
-      <div class="section-heading">
-        <span class="label">04 / Punctuation & Symbols</span>
-        <span>ASCII</span>
-      </div>
-      <p class="sample small" id="punctuation"></p>
-    </section>
-
-    <section class="specimen-section">
-      <div class="section-heading">
-        <span class="label">05 / Additional Symbols</span>
-        <span>Typography</span>
-      </div>
-      <p class="sample small" id="additional"></p>
-    </section>
-
-    <section class="specimen-section">
-      <div class="section-heading">
-        <span class="label">06 / Sample Sentence</span>
-        <span>English</span>
-      </div>
-      <p class="sample sentence" id="sentence"></p>
-    </section>
-
-    <section class="specimen-section">
-      <div class="section-heading">
-        <span class="label">07 / Font Information</span>
-      </div>
-      <p id="font-description"></p>
-    </section>
-
-  </main>
+  <div class="dock">
+    <span>◑</span><span>◉</span><span>✧</span>
+    <span>✉</span><span>♫</span><span>✿</span>
+  </div>
 </div>
+
+<section class="window">
+  <header class="titlebar">
+    <div class="traffic">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="window-title">Unscripted Type Lab</div>
+    <div class="title-tools">⌗ &nbsp; ▣</div>
+  </header>
+
+  <div class="workbench">
+
+    <aside class="sidebar left">
+      <div class="panel-title">TYPEFACE LIBRARY</div>
+      <div class="section-title">Typefaces</div>
+      <button id="mix-button" class="mix-button active" type="button">
+        <span>Random Mix</span>
+        <small id="pool-count">3 / 3</small>
+      </button>
+      <div id="font-list"></div>
+
+      <div class="section-title">Glyphs</div>
+      <div id="categories">
+        <button class="category-button active" data-category="upper">
+          Uppercase <small>26</small>
+        </button>
+        <button class="category-button" data-category="lower">
+          Lowercase <small>26</small>
+        </button>
+        <button class="category-button" data-category="digit">
+          Numbers <small>10</small>
+        </button>
+        <button class="category-button" data-category="punct">
+          Punctuation <small>32</small>
+        </button>
+      </div>
+    </aside>
+
+    <div class="workarea">
+      <div class="tabbar">
+        <button class="tab active" data-tab="compose">Compose</button>
+        <button class="tab" data-tab="glyph">Glyphs</button>
+        <button class="tab" data-tab="edit" id="edit-tab" disabled>Edit</button>
+      </div>
+
+      <div class="canvas" id="canvas">
+        <canvas id="ambient"></canvas>
+
+        <div id="compose-view" class="active">
+          <div class="canvas-top">
+            <span>LIVE COMPOSITION</span>
+            <span id="character-count"></span>
+          </div>
+          <div id="composition"></div>
+          <div class="input-wrap">
+            <textarea id="type-input" rows="1"
+              placeholder="Type something..."
+              spellcheck="false"
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"></textarea>
+          </div>
+        </div>
+
+        <div id="glyph-view">
+          <div class="glyph-header">
+            <h2 id="glyph-heading">Uppercase</h2>
+            <span id="glyph-count">26</span>
+          </div>
+          <div id="glyph-grid"></div>
+        </div>
+
+        <div id="edit-view">
+          <div class="edit-toolbar">
+            <span id="edit-heading">A</span>
+            <div class="edit-actions">
+              <button id="insert-glyph">Insert</button>
+              <button id="back-compose">Compose</button>
+            </div>
+          </div>
+
+          <div class="edit-board" id="edit-board">
+            <div class="edit-guides" id="edit-guides">
+              <div class="guide ascender"></div>
+              <div class="guide cap"></div>
+              <div class="guide xheight"></div>
+              <div class="guide baseline"></div>
+              <div class="guide descender"></div>
+              <span class="edit-letter selected" id="edit-letter"></span>
+            </div>
+          </div>
+
+          <div class="edit-footer">
+            <span id="edit-unicode"></span>
+            <span id="edit-font-name"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="statusbar">
+        <span id="status-font">RANDOM MIX</span>
+        <span id="status-mode">COMPOSE</span>
+      </div>
+    </div>
+
+    <aside class="sidebar right">
+      <div class="section-title">Transformations</div>
+
+      <div class="scope-control">
+        <button class="scope-button active" data-scope="all">All</button>
+        <button class="scope-button" data-scope="selected">Selected</button>
+      </div>
+
+      <div id="metrics"></div>
+
+      <button id="reset-button" class="action-button">Reset</button>
+      <button id="shuffle-button" class="action-button">Shuffle</button>
+
+      <div class="section-title">Layers</div>
+      <div class="layer" id="layer-name">Regular</div>
+    </aside>
+
+  </div>
+</section>
 
 <script>
 const fonts = [
-  {
-    name: "Aptos",
-    reference: "Microsoft Word",
-    fallback: "Inter",
-    family: '"Aptos", "Inter", Arial, sans-serif',
-    weights: [400, 700, 900],
-    description: "A contemporary sans-serif typeface associated with Microsoft Office. Its clean and balanced structure makes it suitable for general text and modern typography."
-  },
-  {
-    name: "Arial",
-    reference: "Microsoft Word",
-    fallback: "Roboto",
-    family: '"Arial", "Roboto", sans-serif',
-    weights: [400, 700, 900],
-    description: "A widely used sans-serif typeface with a neutral visual structure. Its straightforward letterforms provide a useful contrast to more expressive serif and geometric fonts."
-  },
-  {
-    name: "Times New Roman",
-    reference: "Microsoft Word",
-    fallback: "Libre Baskerville",
-    family: '"Times New Roman", "Libre Baskerville", serif',
-    weights: [400, 700],
-    description: "A traditional serif typeface commonly associated with formal documents, publishing, and editorial typography. It features contrasting strokes and compact letterforms."
-  },
-  {
-    name: "Georgia",
-    reference: "Microsoft Word",
-    fallback: "Merriweather",
-    family: '"Georgia", "Merriweather", serif',
-    weights: [400, 700],
-    description: "A serif typeface designed for screen readability. Its larger proportions and distinctive serifs produce recognizable letterforms at different sizes."
-  },
-  {
-    name: "Garamond",
-    reference: "Publishing",
-    fallback: "EB Garamond",
-    family: '"Garamond", "EB Garamond", serif',
-    weights: [400, 700],
-    description: "A family of classical serif designs associated with book typography. Its humanist proportions and delicate stroke variation create an elegant, literary appearance."
-  },
-  {
-    name: "Helvetica Neue",
-    reference: "Graphic Design",
-    fallback: "Raleway",
-    family: '"Helvetica Neue", "Raleway", sans-serif',
-    weights: [300, 700, 900],
-    description: "A neo-grotesque sans-serif design known for restrained letterforms and a clean visual rhythm. The web fallback provides a different, more geometric interpretation."
-  },
-  {
-    name: "Futura",
-    reference: "Graphic Design",
-    fallback: "Montserrat",
-    family: '"Futura", "Montserrat", sans-serif',
-    weights: [400, 700, 900],
-    description: "A geometric sans-serif typeface built around simplified shapes and strong proportions. It is particularly recognizable in uppercase and display typography."
-  },
-  {
-    name: "Myriad Pro",
-    reference: "Adobe / InDesign",
-    fallback: "Source Sans 3",
-    family: '"Myriad Pro", "Source Sans 3", sans-serif',
-    weights: [400, 700, 900],
-    description: "A humanist sans-serif typeface with open and readable forms. It offers a softer alternative to geometric and neo-grotesque sans-serif styles."
-  },
-  {
-    name: "Minion Pro",
-    reference: "Adobe / InDesign",
-    fallback: "Crimson Pro",
-    family: '"Minion Pro", "Crimson Pro", serif',
-    weights: [400, 700],
-    description: "A serif typeface associated with book and editorial design. Its classical proportions and detailed construction are suited to literary and long-form typography."
-  },
-  {
-    name: "Courier New",
-    reference: "Microsoft Word",
-    fallback: "IBM Plex Mono",
-    family: '"Courier New", "IBM Plex Mono", monospace',
-    weights: [400, 700],
-    description: "A monospaced typeface in which characters occupy equal horizontal space. Its typewriter-like appearance is useful for code, numbers, and structured text."
+  {name:"Aptos",family:'"Aptos","Inter",Arial,sans-serif'},
+  {name:"Arial",family:'"Arial","Roboto",sans-serif'},
+  {name:"Times New Roman",family:'"Times New Roman","Libre Baskerville",serif'},
+  {name:"Georgia",family:'"Georgia","Merriweather",serif'},
+  {name:"Garamond",family:'"Garamond","EB Garamond",serif'},
+  {name:"Helvetica Neue",family:'"Helvetica Neue","Raleway",sans-serif'},
+  {name:"Futura",family:'"Futura","Montserrat",sans-serif'},
+  {name:"Myriad Pro",family:'"Myriad Pro","Source Sans 3",sans-serif'},
+  {name:"Minion Pro",family:'"Minion Pro","Crimson Pro",serif'},
+  {name:"Courier New",family:'"Courier New","IBM Plex Mono",monospace'}
+];
+
+const groups = {
+  upper:"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  lower:"abcdefghijklmnopqrstuvwxyz",
+  digit:"0123456789",
+  punct:"!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+};
+
+const defaults = {
+  size:28,
+  width:100,
+  height:100,
+  rotate:0,
+  x:0,
+  y:0,
+  tracking:0,
+  weight:400
+};
+
+const definitions = [
+  ["size","Size",12,90,1,"px"],
+  ["width","Width",40,200,1,"%"],
+  ["height","Height",40,200,1,"%"],
+  ["rotate","Rotation",-45,45,1,"°"],
+  ["x","Offset X",-100,100,1,"px"],
+  ["y","Offset Y",-100,100,1,"px"],
+  ["tracking","Tracking",-10,30,1,"px"],
+  ["weight","Weight",300,900,100,""]
+];
+
+const state = {
+  fontMode:"mix",
+  single:0,
+  pool:[0,4,6],
+  tab:"compose",
+  category:"upper",
+  text:"",
+  displayText:"",
+  glyphs:[],
+  editGlyph:null,
+  selectedIndex:null,
+  scope:"all",
+  global:{...defaults}
+};
+
+const $ = id => document.getElementById(id);
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const rand = (a,b) => a+Math.random()*(b-a);
+const measure = document.createElement("canvas").getContext("2d");
+
+function currentPool(){
+  return state.fontMode==="mix"
+    ? state.pool
+    : [state.single];
+}
+
+function createGlyph(char,fontIndex=null){
+  return {
+    char,
+    fontIndex:fontIndex===null?pick(currentPool()):fontIndex,
+    sx:rand(.84,1.16),
+    sy:rand(.85,1.18),
+    tilt:rand(-4,4),
+    scale:rand(.9,1.12),
+    overrides:{}
+  };
+}
+
+function transformFor(glyph){
+  return {
+    ...state.global,
+    ...(glyph?glyph.overrides:{})
+  };
+}
+
+function selectedTarget(){
+  return state.editGlyph;
+}
+
+function activeValues(){
+  if(state.scope==="selected"&&selectedTarget()){
+    return transformFor(selectedTarget());
   }
-];
+  return {...state.global};
+}
 
-const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const lowercase = "abcdefghijklmnopqrstuvwxyz";
-const numerals = "0123456789";
+function buildFontList(){
+  const list=$("font-list");
+  list.replaceChildren();
 
-const punctuation =
-  "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+  fonts.forEach((font,index)=>{
+    const row=document.createElement("div");
+    row.className="font-row";
 
-const additional =
-  "“ ” ‘ ’ — – … • · © ® ™ § ¶ ° ± × ÷ € £ ¥";
+    if(state.fontMode==="single"&&state.single===index){
+      row.classList.add("active");
+    }
 
-const sentence =
-  "The quick brown fox jumps over the lazy dog.";
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="font-select";
+    button.textContent=
+      String(index+1).padStart(2,"0")+"  "+font.name;
 
-const fontList = document.getElementById("font-list");
-const weightControls = document.getElementById("weight-controls");
+    button.addEventListener("click",()=>{
+      state.fontMode="single";
+      state.single=index;
 
-const fontTitle = document.getElementById("font-title");
-const fontCounter = document.getElementById("font-counter");
-const fontReference = document.getElementById("font-reference");
-const fontFallback = document.getElementById("font-fallback");
-const fontDescription = document.getElementById("font-description");
+      if(state.tab==="edit"&&state.editGlyph){
+        state.editGlyph.fontIndex=index;
+      } else {
+        regenerate(true);
+      }
 
-const specimenElements = [
-  document.getElementById("hero-letters"),
-  document.getElementById("uppercase"),
-  document.getElementById("lowercase"),
-  document.getElementById("numerals"),
-  document.getElementById("punctuation"),
-  document.getElementById("additional"),
-  document.getElementById("sentence")
-];
-
-let currentFont = 0;
-let currentWeight = 400;
-
-document.getElementById("uppercase").textContent = uppercase;
-document.getElementById("lowercase").textContent = lowercase;
-document.getElementById("numerals").textContent = numerals;
-document.getElementById("punctuation").textContent = punctuation;
-document.getElementById("additional").textContent = additional;
-document.getElementById("sentence").textContent = sentence;
-
-function buildFontList() {
-  fontList.replaceChildren();
-
-  fonts.forEach((font, index) => {
-    const button = document.createElement("button");
-
-    button.type = "button";
-    button.className = "font-item";
-    button.dataset.index = index;
-
-    const number = document.createElement("span");
-    number.className = "font-number";
-    number.textContent = String(index + 1).padStart(2, "0");
-
-    const name = document.createElement("span");
-    name.className = "font-name";
-    name.textContent = font.name;
-
-    const arrow = document.createElement("span");
-    arrow.className = "font-arrow";
-    arrow.textContent = "↗";
-
-    button.append(number, name, arrow);
-
-    button.addEventListener("click", () => {
-      selectFont(index);
+      refresh();
     });
 
-    fontList.appendChild(button);
-  });
-}
+    const checkbox=document.createElement("input");
+    checkbox.type="checkbox";
+    checkbox.className="pool-check";
+    checkbox.checked=state.pool.includes(index);
+    checkbox.disabled=
+      !checkbox.checked&&state.pool.length>=3;
+    checkbox.setAttribute("aria-label","Include "+font.name);
 
-function setWeight(weight) {
-  currentWeight = weight;
+    checkbox.addEventListener("change",()=>{
+      if(checkbox.checked){
+        if(state.pool.length>=3){
+          checkbox.checked=false;
+          return;
+        }
+        state.pool.push(index);
+      } else {
+        if(state.pool.length===1){
+          checkbox.checked=true;
+          return;
+        }
+        state.pool=state.pool.filter(i=>i!==index);
+      }
 
-  specimenElements.forEach(element => {
-    element.style.fontWeight = weight;
-  });
-
-  document.querySelectorAll(".weight-button").forEach(button => {
-    const active = Number(button.dataset.weight) === weight;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
-}
-
-function buildWeightControls(font) {
-  weightControls.replaceChildren();
-
-  font.weights.forEach(weight => {
-    const button = document.createElement("button");
-
-    button.type = "button";
-    button.className = "weight-button";
-    button.dataset.weight = weight;
-
-    if (weight === 300) button.textContent = "Light";
-    if (weight === 400) button.textContent = "Regular";
-    if (weight === 700) button.textContent = "Bold";
-    if (weight === 900) button.textContent = "Black";
-
-    button.addEventListener("click", () => {
-      setWeight(weight);
+      state.fontMode="mix";
+      regenerate(true);
+      refresh();
     });
 
-    weightControls.appendChild(button);
-  });
-}
-
-function selectFont(index) {
-  currentFont = index;
-
-  const font = fonts[index];
-
-  fontTitle.textContent = font.name;
-
-  fontCounter.textContent =
-    `${String(index + 1).padStart(2, "0")} / 10`;
-
-  fontReference.textContent =
-    `Reference: ${font.reference}`;
-
-  fontFallback.textContent =
-    `Web fallback: ${font.fallback}`;
-
-  fontDescription.textContent = font.description;
-
-  specimenElements.forEach(element => {
-    element.style.fontFamily = font.family;
+    row.append(button,checkbox);
+    list.appendChild(row);
   });
 
-  document.querySelectorAll(".font-item").forEach(button => {
-    const active = Number(button.dataset.index) === index;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-current", active ? "true" : "false");
-  });
-
-  buildWeightControls(font);
-  setWeight(font.weights.includes(400) ? 400 : font.weights[0]);
-
-  history.replaceState(null, "", `#font-${index + 1}`);
-}
-
-buildFontList();
-
-const initialIndex = Number(
-  window.location.hash.replace("#font-", "")
-);
-
-selectFont(
-  initialIndex >= 1 && initialIndex <= 10
-    ? initialIndex - 1
-    : 0
-);
-
-window.addEventListener("hashchange", () => {
-  const index = Number(
-    window.location.hash.replace("#font-", "")
+  $("pool-count").textContent=state.pool.length+" / 3";
+  $("mix-button").classList.toggle(
+    "active",state.fontMode==="mix"
   );
+}
 
-  if (index >= 1 && index <= 10) {
-    if (index - 1 !== currentFont) {
-      selectFont(index - 1);
+function regenerate(force=false){
+  const next=Array.from(state.text||"Hello World");
+  const previous=Array.from(state.displayText);
+  const old=state.glyphs;
+
+  let prefix=0;
+
+  if(!force){
+    while(
+      prefix<previous.length&&
+      prefix<next.length&&
+      previous[prefix]===next[prefix]
+    ){
+      prefix++;
     }
   }
+
+  state.glyphs=next.map((char,index)=>{
+    return index<prefix
+      ? old[index]
+      : createGlyph(char);
+  });
+
+  state.displayText=next.join("");
+  $("character-count").textContent=next.length+" CHARACTERS";
+}
+
+function renderComposition(){
+  const container=$("composition");
+  container.replaceChildren();
+
+  const fragment=document.createDocumentFragment();
+
+  state.glyphs.forEach((glyph,index)=>{
+    const unit=document.createElement("span");
+    unit.className="unit";
+
+    if(glyph.char==="\n"){
+      unit.classList.add("break");
+      fragment.appendChild(unit);
+      return;
+    }
+
+    if(/\s/u.test(glyph.char)){
+      unit.classList.add("space");
+      unit.style.width=(state.global.size*.38)+"px";
+      fragment.appendChild(unit);
+      return;
+    }
+
+    const t=transformFor(glyph);
+    const font=fonts[glyph.fontIndex];
+    const shape=document.createElement("span");
+
+    shape.className="shape";
+    shape.textContent=glyph.char;
+    shape.style.fontFamily=font.family;
+    shape.style.fontWeight=t.weight;
+    shape.style.fontSize=(t.size*glyph.scale)+"px";
+
+    const sx=t.width/100*glyph.sx;
+    const sy=t.height/100*glyph.sy;
+
+    shape.style.transform=
+      `translate(${t.x}px,${t.y}px) `+
+      `rotate(${t.rotate+glyph.tilt}deg) `+
+      `scale(${sx},${sy})`;
+
+    measure.font=
+      `${t.weight} ${t.size*glyph.scale}px ${font.family}`;
+
+    const width=measure.measureText(glyph.char).width*sx;
+
+    unit.style.width=
+      Math.max(5,width+t.tracking+2)+"px";
+
+    unit.style.height=Math.max(18,t.size*1.65)+"px";
+
+    unit.appendChild(shape);
+
+    unit.addEventListener("click",()=>{
+      openEditor(glyph,index);
+    });
+
+    fragment.appendChild(unit);
+  });
+
+  container.appendChild(fragment);
+}
+
+function renderGlyphGrid(){
+  const grid=$("glyph-grid");
+  grid.replaceChildren();
+
+  const chars=Array.from(groups[state.category]);
+  const names={
+    upper:"Uppercase",
+    lower:"Lowercase",
+    digit:"Numbers",
+    punct:"Punctuation"
+  };
+
+  $("glyph-heading").textContent=names[state.category];
+  $("glyph-count").textContent=chars.length+" GLYPHS";
+
+  chars.forEach((char,index)=>{
+    const cell=document.createElement("button");
+    cell.type="button";
+    cell.className="glyph-cell";
+
+    const letter=document.createElement("span");
+    letter.className="letter";
+    letter.textContent=char;
+
+    const pool=currentPool();
+    const fontIndex=pool[index%pool.length];
+    const t=state.global;
+
+    letter.style.fontFamily=fonts[fontIndex].family;
+    letter.style.fontWeight=t.weight;
+    letter.style.fontSize=Math.max(28,t.size*1.8)+"px";
+    letter.style.transform=
+      `scale(${t.width/100},${t.height/100}) `+
+      `rotate(${t.rotate}deg)`;
+
+    const label=document.createElement("small");
+    label.textContent=char;
+
+    cell.append(letter,label);
+
+    cell.addEventListener("click",()=>{
+      openEditor(createGlyph(char,fontIndex),null);
+    });
+
+    grid.appendChild(cell);
+  });
+}
+
+function openEditor(glyph,index){
+  state.editGlyph=glyph;
+  state.selectedIndex=index;
+  state.scope="selected";
+
+  $("edit-tab").disabled=false;
+  switchTab("edit");
+}
+
+function renderEditor(){
+  const glyph=state.editGlyph;
+  if(!glyph)return;
+
+  const t=transformFor(glyph);
+  const font=fonts[glyph.fontIndex];
+  const letter=$("edit-letter");
+  const guides=$("edit-guides");
+
+  const displaySize=Math.max(55,Math.min(390,t.size*6));
+
+  letter.textContent=glyph.char;
+  letter.style.fontFamily=font.family;
+  letter.style.fontWeight=t.weight;
+  letter.style.fontSize=displaySize*glyph.scale+"px";
+
+  letter.style.transform=
+    `translate(-50%,-50%) `+
+    `translate(${t.x}px,${t.y}px) `+
+    `rotate(${t.rotate+glyph.tilt}deg) `+
+    `scale(${t.width/100*glyph.sx},${t.height/100*glyph.sy})`;
+
+  guides.style.width=
+    Math.max(170,Math.min(450,displaySize*1.4*t.width/100))+"px";
+
+  guides.style.height=
+    Math.max(250,Math.min(500,displaySize*1.8*t.height/100))+"px";
+
+  $("edit-heading").textContent=glyph.char;
+  $("edit-font-name").textContent=font.name;
+
+  $("edit-unicode").textContent=
+    "U+"+glyph.char.codePointAt(0)
+      .toString(16).toUpperCase().padStart(4,"0");
+}
+
+function switchTab(tab){
+  state.tab=tab;
+
+  ["compose","glyph","edit"].forEach(name=>{
+    $(name+"-view").classList.toggle(
+      "active",name===tab
+    );
+  });
+
+  document.querySelectorAll(".tab").forEach(button=>{
+    button.classList.toggle(
+      "active",button.dataset.tab===tab
+    );
+  });
+
+  if(tab==="glyph")renderGlyphGrid();
+  if(tab==="edit")renderEditor();
+
+  $("status-mode").textContent=tab.toUpperCase();
+  syncControls();
+}
+
+function buildMetrics(){
+  const container=$("metrics");
+
+  definitions.forEach(([key,label,min,max,step,unit])=>{
+    const wrap=document.createElement("div");
+    wrap.className="metric";
+
+    const head=document.createElement("div");
+    head.className="metric-head";
+
+    const name=document.createElement("label");
+    name.htmlFor="control-"+key;
+    name.textContent=label;
+
+    const output=document.createElement("output");
+    output.id="value-"+key;
+
+    const slider=document.createElement("input");
+    slider.type="range";
+    slider.id="control-"+key;
+    slider.min=min;
+    slider.max=max;
+    slider.step=step;
+    slider.value=defaults[key];
+
+    slider.addEventListener("input",()=>{
+      const value=Number(slider.value);
+
+      if(state.scope==="selected"&&selectedTarget()){
+        selectedTarget().overrides[key]=value;
+      }else{
+        state.global[key]=value;
+      }
+
+      refreshViews();
+      syncControls();
+    });
+
+    head.append(name,output);
+    wrap.append(head,slider);
+    container.appendChild(wrap);
+  });
+}
+
+function syncControls(){
+  const values=activeValues();
+
+  definitions.forEach(([key,label,min,max,step,unit])=>{
+    $("control-"+key).value=values[key];
+    $("value-"+key).textContent=values[key]+unit;
+  });
+
+  document.querySelectorAll(".scope-button").forEach(button=>{
+    button.classList.toggle(
+      "active",button.dataset.scope===state.scope
+    );
+  });
+
+  $("layer-name").textContent=
+    state.scope==="selected"&&state.editGlyph
+      ? "Selected Glyph"
+      : "All Glyphs";
+}
+
+function refreshViews(){
+  renderComposition();
+
+  if(state.tab==="glyph"){
+    renderGlyphGrid();
+  }
+
+  if(state.tab==="edit"){
+    renderEditor();
+  }
+}
+
+function refresh(){
+  buildFontList();
+  refreshViews();
+  syncControls();
+
+  $("status-font").textContent=
+    state.fontMode==="mix"
+      ? "RANDOM MIX / "+state.pool.length+" FONTS"
+      : fonts[state.single].name.toUpperCase();
+}
+
+$("mix-button").addEventListener("click",()=>{
+  state.fontMode="mix";
+  regenerate(true);
+  refresh();
+});
+
+document.querySelectorAll(".tab").forEach(button=>{
+  button.addEventListener("click",()=>{
+    if(!button.disabled){
+      switchTab(button.dataset.tab);
+    }
+  });
+});
+
+document.querySelectorAll(".category-button").forEach(button=>{
+  button.addEventListener("click",()=>{
+    state.category=button.dataset.category;
+
+    document.querySelectorAll(".category-button").forEach(b=>{
+      b.classList.toggle("active",b===button);
+    });
+
+    switchTab("glyph");
+  });
+});
+
+$("type-input").addEventListener("input",event=>{
+  state.text=event.target.value;
+  regenerate();
+  renderComposition();
+});
+
+document.querySelectorAll(".scope-button").forEach(button=>{
+  button.addEventListener("click",()=>{
+    if(button.dataset.scope==="selected"&&!state.editGlyph){
+      return;
+    }
+
+    state.scope=button.dataset.scope;
+    syncControls();
+  });
+});
+
+$("reset-button").addEventListener("click",()=>{
+  if(state.scope==="selected"&&state.editGlyph){
+    state.editGlyph.overrides={};
+  }else{
+    state.global={...defaults};
+  }
+
+  refreshViews();
+  syncControls();
+});
+
+$("shuffle-button").addEventListener("click",()=>{
+  if(state.tab==="edit"&&state.editGlyph){
+    const old=state.editGlyph;
+    const replacement=createGlyph(old.char,old.fontIndex);
+    replacement.overrides={...old.overrides};
+
+    if(state.selectedIndex!==null){
+      state.glyphs[state.selectedIndex]=replacement;
+    }
+
+    state.editGlyph=replacement;
+  }else{
+    regenerate(true);
+  }
+
+  refreshViews();
+});
+
+$("insert-glyph").addEventListener("click",()=>{
+  if(!state.editGlyph)return;
+
+  const glyph=state.editGlyph;
+  const input=$("type-input");
+
+  const position=input.value.length;
+  input.value+=glyph.char;
+  state.text=input.value;
+
+  regenerate();
+
+  state.glyphs[state.glyphs.length-1]=glyph;
+  state.displayText=state.glyphs.map(g=>g.char).join("");
+
+  switchTab("compose");
+  renderComposition();
+  input.focus();
+});
+
+$("back-compose").addEventListener("click",()=>{
+  switchTab("compose");
+});
+
+const editLetter=$("edit-letter");
+
+let drag=null;
+
+editLetter.addEventListener("pointerdown",event=>{
+  if(!state.editGlyph)return;
+
+  event.preventDefault();
+  editLetter.setPointerCapture(event.pointerId);
+
+  const t=transformFor(state.editGlyph);
+
+  drag={
+    startX:event.clientX,
+    startY:event.clientY,
+    x:t.x,
+    y:t.y
+  };
+
+  state.scope="selected";
+  syncControls();
+});
+
+editLetter.addEventListener("pointermove",event=>{
+  if(!drag||!state.editGlyph)return;
+
+  state.editGlyph.overrides.x=
+    Math.round(drag.x+event.clientX-drag.startX);
+
+  state.editGlyph.overrides.y=
+    Math.round(drag.y+event.clientY-drag.startY);
+
+  renderEditor();
+  syncControls();
+});
+
+editLetter.addEventListener("pointerup",()=>{
+  drag=null;
+  renderComposition();
+});
+
+editLetter.addEventListener("pointercancel",()=>{
+  drag=null;
+  renderComposition();
+});
+
+const canvas=$("canvas");
+const ambient=$("ambient");
+const ctx=ambient.getContext("2d");
+
+const symbols=
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
+  "abcdefghijklmnopqrstuvwxyz"+
+  "0123456789@#$%&*+-_/?!<>{}";
+
+let background=[];
+let canvasWidth=0;
+let canvasHeight=0;
+let pointer={x:-999,y:-999,visible:false};
+let animationFrame=null;
+
+function buildBackground(){
+  const rect=canvas.getBoundingClientRect();
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+
+  canvasWidth=rect.width;
+  canvasHeight=rect.height;
+
+  ambient.width=Math.max(1,Math.floor(canvasWidth*dpr));
+  ambient.height=Math.max(1,Math.floor(canvasHeight*dpr));
+
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  background=[];
+
+  for(let y=8;y<canvasHeight;y+=18){
+    for(let x=8;x<canvasWidth;x+=18){
+      background.push({
+        x:x+rand(-3,3),
+        y:y+rand(-3,3),
+        char:pick(Array.from(symbols)),
+        opacity:rand(.035,.17),
+        bold:Math.random()<.12
+      });
+    }
+  }
+
+  drawBackground();
+}
+
+function drawBackground(){
+  ctx.clearRect(0,0,canvasWidth,canvasHeight);
+  ctx.textBaseline="middle";
+
+  const radius=125;
+
+  background.forEach(item=>{
+    let moveX=0;
+    let moveY=0;
+
+    if(pointer.visible){
+      const dx=item.x-pointer.x;
+      const dy=item.y-pointer.y;
+      const distance=Math.hypot(dx,dy);
+
+      if(distance<radius&&distance>.001){
+        const strength=Math.pow(1-distance/radius,2)*22;
+        moveX=dx/distance*strength;
+        moveY=dy/distance*strength;
+      }
+    }
+
+    ctx.fillStyle=`rgba(225,226,232,${item.opacity})`;
+    ctx.font=
+      `${item.bold?700:400} 11px "IBM Plex Mono",monospace`;
+
+    ctx.fillText(
+      item.char,
+      item.x+moveX,
+      item.y+moveY
+    );
+  });
+}
+
+function queueBackground(){
+  if(animationFrame!==null)return;
+
+  animationFrame=requestAnimationFrame(()=>{
+    animationFrame=null;
+    drawBackground();
+  });
+}
+
+canvas.addEventListener("pointermove",event=>{
+  const rect=canvas.getBoundingClientRect();
+
+  pointer.x=event.clientX-rect.left;
+  pointer.y=event.clientY-rect.top;
+  pointer.visible=true;
+
+  queueBackground();
+});
+
+canvas.addEventListener("pointerleave",()=>{
+  pointer.visible=false;
+  queueBackground();
+});
+
+const observer=new ResizeObserver(buildBackground);
+observer.observe(canvas);
+
+buildMetrics();
+regenerate(true);
+refresh();
+renderGlyphGrid();
+buildBackground();
+
+document.fonts.ready.then(()=>{
+  refreshViews();
+  drawBackground();
 });
 </script>
 
 </body>
 </html>
-
