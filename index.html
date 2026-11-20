@@ -11,35 +11,59 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --background: #050505;
+      --foreground: #f1eee8;
+      --input-background: #101010;
+      --input-border: rgba(255,255,255,0.24);
+      --placeholder: #777;
+      --spotlight-center: rgba(255,255,255,0.65);
+      --spotlight-edge: rgba(255,255,255,0.18);
+    }
+
+    body.light {
+      --background: #fafafa;
+      --foreground: #080808;
+      --input-background: #f4f4f4;
+      --input-border: rgba(0,0,0,0.20);
+      --placeholder: #777;
+      --spotlight-center: rgba(0,0,0,0.65);
+      --spotlight-edge: rgba(0,0,0,0.18);
+    }
+
     html, body {
       margin: 0;
       min-height: 100%;
-      background: #050505;
-      color: #f1eee8;
     }
 
     body {
       min-height: 100svh;
+      background: var(--background);
+      color: var(--foreground);
       font-family: Arial, sans-serif;
+      transition: background 350ms ease, color 350ms ease;
     }
+
+    /* Page layout */
 
     main {
       min-height: 100svh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 5vh 6vw 8vh;
+      padding: 6vh 6vw 7vh;
     }
 
-    /* Central typography display */
+    /* Top-left typography */
 
     #stage {
       flex: 1;
       width: 100%;
-      min-height: 350px;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding-top: 3vh;
+      min-height: 0;
+      overflow: auto;
     }
 
     #composition {
@@ -47,9 +71,8 @@
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
-      align-content: center;
-      justify-content: center;
-
+      align-content: flex-start;
+      justify-content: flex-start;
       font-size: clamp(72px, 10vw, 170px);
     }
 
@@ -79,60 +102,107 @@
       height: 0.25em;
     }
 
-    /* Input area */
+    /* Smaller input */
 
     #input-area {
-      width: min(900px, 100%);
+      width: min(620px, 100%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
     }
 
     #message {
       display: block;
       width: 100%;
-      min-height: 88px;
-      padding: 28px;
+      height: 58px;
+      padding: 17px 20px;
 
-      background: #101010;
-      border: 1px solid #777;
-      border-radius: 16px;
+      background: var(--input-background);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
 
-      color: #f1eee8;
+      color: var(--foreground);
       font-family: Arial, sans-serif;
-      font-size: 17px;
-      line-height: 1.5;
+      font-size: 15px;
+      line-height: 22px;
 
-      resize: vertical;
+      resize: none;
       outline: none;
+      overflow-y: auto;
+
+      transition:
+        background 350ms ease,
+        border-color 350ms ease,
+        color 350ms ease;
     }
 
     #message::placeholder {
-      color: #777;
+      color: var(--placeholder);
     }
 
     #message:focus {
-      border-color: #e5e2dc;
+      border-color: var(--foreground);
+    }
+
+    /* Blurred spotlight cursor */
+
+    #spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+
+      pointer-events: none;
+      z-index: 100;
+
+      background: radial-gradient(
+        circle,
+        var(--spotlight-center) 0%,
+        var(--spotlight-edge) 32%,
+        transparent 72%
+      );
+
+      filter: blur(13px);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+
+      transition: opacity 180ms ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      body {
+        cursor: none;
+      }
+
+      #message {
+        cursor: text;
+      }
     }
 
     @keyframes appear {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     @media (max-width: 600px) {
       main {
-        padding: 4vh 5vw 6vh;
+        padding: 5vh 5vw 6vh;
       }
 
       #composition {
         font-size: clamp(58px, 13vw, 100px);
       }
 
+      #input-area {
+        width: 100%;
+      }
+
       #message {
-        padding: 20px;
-        min-height: 72px;
+        height: 54px;
+        padding: 15px 16px;
+        font-size: 14px;
       }
     }
 
@@ -140,36 +210,50 @@
       .shape {
         animation: none;
       }
+
+      body, #message, #spotlight {
+        transition: none;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <main>
+  <div id="spotlight" aria-hidden="true"></div>
 
+  <main>
     <section id="stage">
-      <div id="composition" aria-label="Generated typography"></div>
+      <div
+        id="composition"
+        aria-label="Generated typography"
+      ></div>
     </section>
 
     <div id="input-area">
       <textarea
         id="message"
+        rows="1"
         placeholder="Type something..."
         aria-label="Type something"
         spellcheck="false"
         autocomplete="off"
+        autocorrect="off"
         autocapitalize="off"
       ></textarea>
     </div>
-
   </main>
 
   <script>
     const input = document.getElementById("message");
     const composition = document.getElementById("composition");
+    const spotlight = document.getElementById("spotlight");
 
-    const context = document.createElement("canvas").getContext("2d");
+    const context = document
+      .createElement("canvas")
+      .getContext("2d");
+
+    /* Typography settings */
 
     const fonts = [
       { family: "Arial, sans-serif", weight: 400 },
@@ -197,6 +281,8 @@
 
     let previousText = [];
     let characters = [];
+
+    /* Generate individual letterforms */
 
     function createCharacter(letter, index) {
       const element = document.createElement("span");
@@ -226,7 +312,6 @@
 
       element.className = "character";
       shape.className = "shape";
-
       shape.textContent = letter;
 
       shape.style.fontFamily = font.family;
@@ -253,6 +338,8 @@
 
       return element;
     }
+
+    /* Live typography update */
 
     function updateTypography(text) {
       const nextText = Array.from(text || "Hello World");
@@ -296,6 +383,41 @@
     input.addEventListener("input", () => {
       updateTypography(input.value);
     });
+
+    /* Mouse-following spotlight */
+
+    document.addEventListener("pointermove", event => {
+      if (
+        event.pointerType !== "mouse" &&
+        event.pointerType !== "pen"
+      ) {
+        return;
+      }
+
+      spotlight.style.left = `${event.clientX}px`;
+      spotlight.style.top = `${event.clientY}px`;
+      spotlight.style.opacity = "1";
+    });
+
+    document.addEventListener("pointerleave", () => {
+      spotlight.style.opacity = "0";
+    });
+
+    window.addEventListener("blur", () => {
+      spotlight.style.opacity = "0";
+    });
+
+    /* Click anywhere except input to change theme */
+
+    document.addEventListener("click", event => {
+      if (event.target.closest("#input-area")) {
+        return;
+      }
+
+      document.body.classList.toggle("light");
+    });
+
+    /* Initial text */
 
     updateTypography("Hello World");
   </script>
