@@ -4,8 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#050505">
-<title>Unscripted</title>
+<title>Type Index — Unscripted</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,245 +17,299 @@
 }
 
 :root {
-  --background: #050505;
-  --foreground: #f1eee8;
-  --input-background: #101010;
-  --input-border: rgba(255,255,255,0.18);
-  --placeholder: #777;
-  --spotlight-center: rgba(255,255,255,0.65);
-  --spotlight-edge: rgba(255,255,255,0.18);
+  --bg: #050505;
+  --fg: #f1eee8;
+  --muted: #777;
+  --line: #292929;
+  --hover: #161616;
 }
 
-body.light {
-  --background: #fafafa;
-  --foreground: #080808;
-  --input-background: #f4f4f4;
-  --input-border: rgba(0,0,0,0.16);
-  --placeholder: #888;
-  --spotlight-center: rgba(0,0,0,0.65);
-  --spotlight-edge: rgba(0,0,0,0.18);
+html {
+  background: var(--bg);
 }
 
-html,
 body {
   margin: 0;
-  min-height: 100%;
-}
-
-body {
-  min-height: 100svh;
-  background: var(--background);
-  color: var(--foreground);
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
   font-family: Arial, sans-serif;
-  overflow-x: hidden;
-  transition:
-    background 350ms ease,
-    color 350ms ease;
 }
 
-#ambient {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 400ms ease,
-    visibility 400ms ease;
+button,
+a {
+  font: inherit;
 }
 
-body.light #ambient {
-  opacity: 1;
-  visibility: visible;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.ambient-character {
-  position: absolute;
-  display: block;
-  font-family: "IBM Plex Mono", "Courier New", monospace;
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 4vw;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
   font-size: 12px;
-  font-weight: 400;
-  line-height: 1;
-  white-space: pre;
-  user-select: none;
-  color: #000;
-  pointer-events: none;
-  will-change: transform;
-  transition:
-    transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-weight: 700;
+  letter-spacing: 0.15em;
 }
 
-main {
-  position: relative;
-  z-index: 1;
-  min-height: 100svh;
+.back {
+  font-size: 12px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.back:hover {
+  color: var(--fg);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  min-height: calc(100vh - 65px);
+}
+
+.sidebar {
+  border-right: 1px solid var(--line);
+  padding: 40px 0;
+}
+
+.label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sidebar-heading {
+  padding: 0 25px 25px;
+}
+
+.font-list {
   display: flex;
   flex-direction: column;
-  padding: 6vh 6vw 7vh;
 }
 
-#stage {
-  flex: 1;
+.font-item {
   width: 100%;
-  min-height: 0;
+  padding: 18px 25px;
+  display: grid;
+  grid-template-columns: 30px 1fr 22px;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  color: var(--fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.font-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.font-item:hover,
+.font-item.active {
+  background: var(--hover);
+}
+
+.font-number {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.font-name {
+  font-size: 15px;
+}
+
+.font-arrow {
+  color: var(--muted);
+  text-align: right;
+  font-size: 16px;
+}
+
+.font-item.active .font-arrow {
+  color: var(--fg);
+}
+
+.specimen {
+  min-width: 0;
+  padding: 45px 5vw 100px;
+}
+
+.specimen-top {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding-top: 3vh;
-  overflow: auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-#composition {
-  width: 100%;
+#font-counter {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+}
+
+#font-title {
+  margin: 65px 0 10px;
+  font-size: clamp(36px, 5vw, 78px);
+  font-weight: 400;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.font-meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  align-content: flex-start;
-  justify-content: flex-start;
-  gap: 0;
-  font-size: clamp(12px, 1.25vw, 22px);
+  gap: 10px 30px;
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
-.character {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: baseline;
-  justify-content: center;
-  height: 1.5em;
+.hero-sample {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  margin: 40px 0 65px;
+  overflow: hidden;
 }
 
-.shape {
-  display: inline-block;
-  line-height: 1;
-  white-space: pre;
-  transform-origin: 50% 80%;
-  user-select: none;
-  animation: appear 180ms ease-out both;
+#hero-letters {
+  font-size: clamp(100px, 15vw, 240px);
+  line-height: 1.15;
+  letter-spacing: -0.06em;
+  overflow-wrap: anywhere;
 }
 
-.word-space {
-  width: 0.35em;
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.line-break {
-  flex-basis: 100%;
-  height: 0.25em;
+.weight-button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 3px;
+  padding: 9px 13px;
+  font-size: 11px;
+  cursor: pointer;
 }
 
-#input-area {
-  width: min(520px, 100%);
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
+.weight-button.active {
+  color: var(--bg);
+  background: var(--fg);
+  border-color: var(--fg);
 }
 
-#message {
-  display: block;
-  width: 100%;
-  height: 54px;
-  padding: 15px 18px;
-  background: var(--input-background);
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  color: var(--foreground);
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  line-height: 22px;
-  resize: none;
-  outline: none;
-  overflow-y: auto;
-  transition:
-    background 350ms ease,
-    border-color 350ms ease,
-    color 350ms ease;
+.specimen-section {
+  padding: 35px 0 45px;
+  border-top: 1px solid var(--line);
 }
 
-#message::placeholder {
-  color: var(--placeholder);
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-#message:focus {
-  border-color: var(--foreground);
+.section-heading span:last-child {
+  font-size: 11px;
+  color: var(--muted);
 }
 
-#spotlight {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 10;
-  background: radial-gradient(
-    circle,
-    var(--spotlight-center) 0%,
-    var(--spotlight-edge) 32%,
-    transparent 72%
-  );
-  filter: blur(13px);
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 180ms ease;
+.sample {
+  margin: 0;
+  font-size: clamp(25px, 3.3vw, 54px);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-@keyframes appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.sample.small {
+  font-size: clamp(19px, 2.2vw, 35px);
+  line-height: 1.8;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  body {
-    cursor: none;
+.sample.sentence {
+  font-size: clamp(28px, 3.8vw, 60px);
+  line-height: 1.4;
+}
+
+#font-description {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  max-width: 650px;
+}
+
+@media (max-width: 800px) {
+  .layout {
+    grid-template-columns: 1fr;
   }
 
-  #message {
-    cursor: text;
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 25px 0 0;
   }
-}
 
-@media (pointer: coarse) {
-  #spotlight {
+  .font-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 15px 15px;
+  }
+
+  .font-item {
+    width: auto;
+    min-width: 150px;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    border: 1px solid var(--line);
+    margin-right: 8px;
+    padding: 14px;
+  }
+
+  .font-item:last-child {
+    border: 1px solid var(--line);
+  }
+
+  .font-arrow {
     display: none;
   }
-}
 
-@media (max-width: 600px) {
-  main {
-    padding: 5vh 5vw 6vh;
+  .specimen {
+    padding: 35px 6vw 70px;
   }
 
-  #composition {
-    font-size: 12px;
+  #font-title {
+    margin-top: 40px;
   }
 
-  #input-area {
-    width: 100%;
-  }
-
-  #message {
-    height: 50px;
-    padding: 13px 15px;
+  .hero-sample {
+    min-height: 170px;
+    margin: 30px 0 45px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shape {
-    animation: none;
-  }
-
-  .ambient-character,
-  body,
-  #message,
-  #spotlight,
-  #ambient {
-    transition: none;
+  * {
+    transition: none !important;
   }
 }
 </style>
@@ -264,511 +317,352 @@ main {
 
 <body>
 
-<div id="ambient" aria-hidden="true"></div>
-<div id="spotlight" aria-hidden="true"></div>
+<header>
+  <div class="brand">UNSCRIPTED / TYPE INDEX</div>
+  <a class="back" href="./index.html">Back to Unscripted ↗</a>
+</header>
 
-<main>
-  <section id="stage">
-    <div
-      id="composition"
-      aria-label="Generated typography"
-      aria-live="off"
-    ></div>
-  </section>
+<div class="layout">
 
-  <div id="input-area">
-    <textarea
-      id="message"
-      rows="1"
-      placeholder="Type something..."
-      aria-label="Type something"
-      spellcheck="false"
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-    ></textarea>
-  </div>
-</main>
+  <aside class="sidebar">
+    <div class="sidebar-heading">
+      <div class="label">Typeface Library / 001—010</div>
+    </div>
+    <nav class="font-list" id="font-list" aria-label="Typeface index"></nav>
+  </aside>
+
+  <main class="specimen">
+
+    <div class="specimen-top">
+      <span class="label">Typeface Specimen</span>
+      <span id="font-counter">01 / 10</span>
+    </div>
+
+    <h1 id="font-title"></h1>
+
+    <div class="font-meta">
+      <span id="font-reference"></span>
+      <span id="font-fallback"></span>
+    </div>
+
+    <div class="hero-sample">
+      <div id="hero-letters">Aa</div>
+    </div>
+
+    <div class="section-heading">
+      <span class="label">Font Weight</span>
+      <div class="controls" id="weight-controls"></div>
+    </div>
+
+    <section class="specimen-section">
+      <div class="section-heading">
+        <span class="label">01 / Uppercase</span>
+        <span>A–Z</span>
+      </div>
+      <p class="sample" id="uppercase"></p>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading">
+        <span class="label">02 / Lowercase</span>
+        <span>a–z</span>
+      </div>
+      <p class="sample" id="lowercase"></p>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading">
+        <span class="label">03 / Numerals</span>
+        <span>0–9</span>
+      </div>
+      <p class="sample" id="numerals"></p>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading">
+        <span class="label">04 / Punctuation & Symbols</span>
+        <span>ASCII</span>
+      </div>
+      <p class="sample small" id="punctuation"></p>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading">
+        <span class="label">05 / Additional Symbols</span>
+        <span>Typography</span>
+      </div>
+      <p class="sample small" id="additional"></p>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading">
+        <span class="label">06 / Sample Sentence</span>
+        <span>English</span>
+      </div>
+      <p class="sample sentence" id="sentence"></p>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading">
+        <span class="label">07 / Font Information</span>
+      </div>
+      <p id="font-description"></p>
+    </section>
+
+  </main>
+</div>
 
 <script>
-const input = document.getElementById("message");
-const composition = document.getElementById("composition");
-const spotlight = document.getElementById("spotlight");
-const ambient = document.getElementById("ambient");
-
-const context = document
-  .createElement("canvas")
-  .getContext("2d");
-
 const fonts = [
   {
     name: "Aptos",
+    reference: "Microsoft Word",
+    fallback: "Inter",
     family: '"Aptos", "Inter", Arial, sans-serif',
-    weights: [400, 700, 900]
+    weights: [400, 700, 900],
+    description: "A contemporary sans-serif typeface associated with Microsoft Office. Its clean and balanced structure makes it suitable for general text and modern typography."
   },
   {
     name: "Arial",
+    reference: "Microsoft Word",
+    fallback: "Roboto",
     family: '"Arial", "Roboto", sans-serif',
-    weights: [400, 700, 900]
+    weights: [400, 700, 900],
+    description: "A widely used sans-serif typeface with a neutral visual structure. Its straightforward letterforms provide a useful contrast to more expressive serif and geometric fonts."
   },
   {
     name: "Times New Roman",
+    reference: "Microsoft Word",
+    fallback: "Libre Baskerville",
     family: '"Times New Roman", "Libre Baskerville", serif',
-    weights: [400, 700]
+    weights: [400, 700],
+    description: "A traditional serif typeface commonly associated with formal documents, publishing, and editorial typography. It features contrasting strokes and compact letterforms."
   },
   {
     name: "Georgia",
+    reference: "Microsoft Word",
+    fallback: "Merriweather",
     family: '"Georgia", "Merriweather", serif',
-    weights: [400, 700]
+    weights: [400, 700],
+    description: "A serif typeface designed for screen readability. Its larger proportions and distinctive serifs produce recognizable letterforms at different sizes."
   },
   {
     name: "Garamond",
+    reference: "Publishing",
+    fallback: "EB Garamond",
     family: '"Garamond", "EB Garamond", serif',
-    weights: [400, 700]
+    weights: [400, 700],
+    description: "A family of classical serif designs associated with book typography. Its humanist proportions and delicate stroke variation create an elegant, literary appearance."
   },
   {
     name: "Helvetica Neue",
+    reference: "Graphic Design",
+    fallback: "Raleway",
     family: '"Helvetica Neue", "Raleway", sans-serif',
-    weights: [300, 700, 900]
+    weights: [300, 700, 900],
+    description: "A neo-grotesque sans-serif design known for restrained letterforms and a clean visual rhythm. The web fallback provides a different, more geometric interpretation."
   },
   {
     name: "Futura",
+    reference: "Graphic Design",
+    fallback: "Montserrat",
     family: '"Futura", "Montserrat", sans-serif',
-    weights: [400, 700, 900]
+    weights: [400, 700, 900],
+    description: "A geometric sans-serif typeface built around simplified shapes and strong proportions. It is particularly recognizable in uppercase and display typography."
   },
   {
     name: "Myriad Pro",
+    reference: "Adobe / InDesign",
+    fallback: "Source Sans 3",
     family: '"Myriad Pro", "Source Sans 3", sans-serif',
-    weights: [400, 700, 900]
+    weights: [400, 700, 900],
+    description: "A humanist sans-serif typeface with open and readable forms. It offers a softer alternative to geometric and neo-grotesque sans-serif styles."
   },
   {
     name: "Minion Pro",
+    reference: "Adobe / InDesign",
+    fallback: "Crimson Pro",
     family: '"Minion Pro", "Crimson Pro", serif',
-    weights: [400, 700]
+    weights: [400, 700],
+    description: "A serif typeface associated with book and editorial design. Its classical proportions and detailed construction are suited to literary and long-form typography."
   },
   {
     name: "Courier New",
+    reference: "Microsoft Word",
+    fallback: "IBM Plex Mono",
     family: '"Courier New", "IBM Plex Mono", monospace',
-    weights: [400, 700]
+    weights: [400, 700],
+    description: "A monospaced typeface in which characters occupy equal horizontal space. Its typewriter-like appearance is useful for code, numbers, and structured text."
   }
 ];
 
-const beats = [
-  {
-    size: 0.90,
-    width: 1.05,
-    height: 0.95
-  },
-  {
-    size: 1.15,
-    width: 0.75,
-    height: 1.35
-  },
-  {
-    size: 0.85,
-    width: 1.25,
-    height: 0.85
-  },
-  {
-    size: 1.25,
-    width: 0.95,
-    height: 1.15
-  }
+const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const lowercase = "abcdefghijklmnopqrstuvwxyz";
+const numerals = "0123456789";
+
+const punctuation =
+  "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+
+const additional =
+  "“ ” ‘ ’ — – … • · © ® ™ § ¶ ° ± × ÷ € £ ¥";
+
+const sentence =
+  "The quick brown fox jumps over the lazy dog.";
+
+const fontList = document.getElementById("font-list");
+const weightControls = document.getElementById("weight-controls");
+
+const fontTitle = document.getElementById("font-title");
+const fontCounter = document.getElementById("font-counter");
+const fontReference = document.getElementById("font-reference");
+const fontFallback = document.getElementById("font-fallback");
+const fontDescription = document.getElementById("font-description");
+
+const specimenElements = [
+  document.getElementById("hero-letters"),
+  document.getElementById("uppercase"),
+  document.getElementById("lowercase"),
+  document.getElementById("numerals"),
+  document.getElementById("punctuation"),
+  document.getElementById("additional"),
+  document.getElementById("sentence")
 ];
 
-const ambientSymbols =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-  "abcdefghijklmnopqrstuvwxyz" +
-  "0123456789" +
-  "@#$%&*+-_=/?!<>[]{}()";
+let currentFont = 0;
+let currentWeight = 400;
 
-const ambientSettings = {
-  fontSize: 12,
-  spacingX: 22,
-  spacingY: 22,
-  jitter: 4,
-  interactionRadius: 115,
-  interactionStrength: 19,
-  minimumOpacity: 0.035,
-  maximumOpacity: 0.23
-};
+document.getElementById("uppercase").textContent = uppercase;
+document.getElementById("lowercase").textContent = lowercase;
+document.getElementById("numerals").textContent = numerals;
+document.getElementById("punctuation").textContent = punctuation;
+document.getElementById("additional").textContent = additional;
+document.getElementById("sentence").textContent = sentence;
 
-const random = (min, max) =>
-  min + Math.random() * (max - min);
+function buildFontList() {
+  fontList.replaceChildren();
 
-const pick = array =>
-  array[Math.floor(Math.random() * array.length)];
+  fonts.forEach((font, index) => {
+    const button = document.createElement("button");
 
-const clamp = (value, min, max) =>
-  Math.max(min, Math.min(max, value));
+    button.type = "button";
+    button.className = "font-item";
+    button.dataset.index = index;
 
-let previousText = [];
-let characters = [];
+    const number = document.createElement("span");
+    number.className = "font-number";
+    number.textContent = String(index + 1).padStart(2, "0");
 
-let ambientGrid = [];
-let ambientColumns = 0;
-let ambientRows = 0;
+    const name = document.createElement("span");
+    name.className = "font-name";
+    name.textContent = font.name;
 
-let activeAmbient = new Set();
+    const arrow = document.createElement("span");
+    arrow.className = "font-arrow";
+    arrow.textContent = "↗";
 
-let pointerX = -1000;
-let pointerY = -1000;
-let pointerFrame = null;
+    button.append(number, name, arrow);
 
-function createAmbient() {
-  ambient.replaceChildren();
+    button.addEventListener("click", () => {
+      selectFont(index);
+    });
 
-  ambientGrid = [];
-  activeAmbient.clear();
-
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  const spacingX = ambientSettings.spacingX;
-  const spacingY = ambientSettings.spacingY;
-
-  ambientColumns = Math.ceil(width / spacingX) + 1;
-  ambientRows = Math.ceil(height / spacingY) + 1;
-
-  const fragment = document.createDocumentFragment();
-
-  for (let row = 0; row < ambientRows; row++) {
-    for (let col = 0; col < ambientColumns; col++) {
-      const element = document.createElement("span");
-
-      const x =
-        col * spacingX +
-        random(-ambientSettings.jitter, ambientSettings.jitter);
-
-      const y =
-        row * spacingY +
-        random(-ambientSettings.jitter, ambientSettings.jitter);
-
-      const symbol = pick(Array.from(ambientSymbols));
-
-      const opacity = random(
-        ambientSettings.minimumOpacity,
-        ambientSettings.maximumOpacity
-      );
-
-      element.className = "ambient-character";
-      element.textContent = symbol;
-
-      element.style.left = `${x}px`;
-      element.style.top = `${y}px`;
-      element.style.opacity = opacity;
-
-      element.style.fontSize =
-        `${ambientSettings.fontSize}px`;
-
-      element.style.fontWeight =
-        Math.random() < 0.16 ? "700" : "400";
-
-      fragment.appendChild(element);
-
-      ambientGrid.push({
-        element,
-        x,
-        y
-      });
-    }
-  }
-
-  ambient.appendChild(fragment);
+    fontList.appendChild(button);
+  });
 }
 
-function resetAmbient() {
-  for (const index of activeAmbient) {
-    const item = ambientGrid[index];
+function setWeight(weight) {
+  currentWeight = weight;
 
-    if (item) {
-      item.element.style.transform = "translate3d(0,0,0)";
-    }
-  }
+  specimenElements.forEach(element => {
+    element.style.fontWeight = weight;
+  });
 
-  activeAmbient.clear();
+  document.querySelectorAll(".weight-button").forEach(button => {
+    const active = Number(button.dataset.weight) === weight;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
 }
 
-function updateAmbientInteraction() {
-  pointerFrame = null;
+function buildWeightControls(font) {
+  weightControls.replaceChildren();
 
-  if (!document.body.classList.contains("light")) {
-    resetAmbient();
-    return;
-  }
+  font.weights.forEach(weight => {
+    const button = document.createElement("button");
 
-  const radius = ambientSettings.interactionRadius;
-  const strength = ambientSettings.interactionStrength;
+    button.type = "button";
+    button.className = "weight-button";
+    button.dataset.weight = weight;
 
-  const spacingX = ambientSettings.spacingX;
-  const spacingY = ambientSettings.spacingY;
+    if (weight === 300) button.textContent = "Light";
+    if (weight === 400) button.textContent = "Regular";
+    if (weight === 700) button.textContent = "Bold";
+    if (weight === 900) button.textContent = "Black";
 
-  const centerCol = Math.floor(pointerX / spacingX);
-  const centerRow = Math.floor(pointerY / spacingY);
+    button.addEventListener("click", () => {
+      setWeight(weight);
+    });
 
-  const rangeX = Math.ceil(radius / spacingX) + 1;
-  const rangeY = Math.ceil(radius / spacingY) + 1;
+    weightControls.appendChild(button);
+  });
+}
 
-  const nextActive = new Set();
+function selectFont(index) {
+  currentFont = index;
 
-  const minRow = Math.max(0, centerRow - rangeY);
-  const maxRow = Math.min(
-    ambientRows - 1,
-    centerRow + rangeY
+  const font = fonts[index];
+
+  fontTitle.textContent = font.name;
+
+  fontCounter.textContent =
+    `${String(index + 1).padStart(2, "0")} / 10`;
+
+  fontReference.textContent =
+    `Reference: ${font.reference}`;
+
+  fontFallback.textContent =
+    `Web fallback: ${font.fallback}`;
+
+  fontDescription.textContent = font.description;
+
+  specimenElements.forEach(element => {
+    element.style.fontFamily = font.family;
+  });
+
+  document.querySelectorAll(".font-item").forEach(button => {
+    const active = Number(button.dataset.index) === index;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-current", active ? "true" : "false");
+  });
+
+  buildWeightControls(font);
+  setWeight(font.weights.includes(400) ? 400 : font.weights[0]);
+
+  history.replaceState(null, "", `#font-${index + 1}`);
+}
+
+buildFontList();
+
+const initialIndex = Number(
+  window.location.hash.replace("#font-", "")
+);
+
+selectFont(
+  initialIndex >= 1 && initialIndex <= 10
+    ? initialIndex - 1
+    : 0
+);
+
+window.addEventListener("hashchange", () => {
+  const index = Number(
+    window.location.hash.replace("#font-", "")
   );
 
-  const minCol = Math.max(0, centerCol - rangeX);
-  const maxCol = Math.min(
-    ambientColumns - 1,
-    centerCol + rangeX
-  );
-
-  for (let row = minRow; row <= maxRow; row++) {
-    for (let col = minCol; col <= maxCol; col++) {
-      const index = row * ambientColumns + col;
-      const item = ambientGrid[index];
-
-      if (!item) continue;
-
-      const dx = item.x - pointerX;
-      const dy = item.y - pointerY;
-
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance >= radius) continue;
-
-      const falloff = Math.pow(
-        1 - distance / radius,
-        2
-      );
-
-      const directionX =
-        distance > 0.001 ? dx / distance : 0;
-
-      const directionY =
-        distance > 0.001 ? dy / distance : 0;
-
-      const movement = strength * falloff;
-
-      const offsetX = directionX * movement;
-      const offsetY = directionY * movement;
-
-      item.element.style.transform = `
-        translate3d(
-          ${offsetX}px,
-          ${offsetY}px,
-          0
-        )
-      `;
-
-      nextActive.add(index);
+  if (index >= 1 && index <= 10) {
+    if (index - 1 !== currentFont) {
+      selectFont(index - 1);
     }
   }
-
-  for (const index of activeAmbient) {
-    if (!nextActive.has(index)) {
-      const item = ambientGrid[index];
-
-      if (item) {
-        item.element.style.transform =
-          "translate3d(0,0,0)";
-      }
-    }
-  }
-
-  activeAmbient = nextActive;
-}
-
-function createCharacter(letter, index) {
-  const element = document.createElement("span");
-
-  if (letter === "\n") {
-    element.className = "line-break";
-    return element;
-  }
-
-  if (/\s/u.test(letter)) {
-    element.className = "character word-space";
-    return element;
-  }
-
-  const beat = beats[index % beats.length];
-
-  const font = pick(fonts);
-  const weight = pick(font.weights);
-
-  const size =
-    beat.size * random(0.85, 1.15);
-
-  const scaleX =
-    beat.width * random(0.75, 1.25);
-
-  const scaleY =
-    beat.height * random(0.85, 1.30);
-
-  const rotation = random(-4, 4);
-  const rise = random(-0.08, 0.08);
-  const italic = Math.random() < 0.25;
-
-  const shape = document.createElement("span");
-
-  element.className = "character";
-  shape.className = "shape";
-  shape.textContent = letter;
-
-  shape.style.fontFamily = font.family;
-  shape.style.fontWeight = weight;
-  shape.style.fontStyle =
-    italic ? "italic" : "normal";
-
-  shape.style.fontSize = `${size}em`;
-
-  shape.style.transform = `
-    translateY(${rise}em)
-    rotate(${rotation}deg)
-    scale(${scaleX}, ${scaleY})
-  `;
-
-  element.appendChild(shape);
-
-  context.font =
-    `${italic ? "italic" : "normal"} ` +
-    `${weight} 100px ${font.family}`;
-
-  const measured =
-    context.measureText(letter).width;
-
-  const characterWidth =
-    measured / 100 * size * scaleX;
-
-  element.style.width =
-    `${Math.max(0.18, characterWidth + 0.05)}em`;
-
-  return element;
-}
-
-function updateTypography(text) {
-  const nextText = Array.from(text || "Hello World");
-
-  let prefix = 0;
-  let suffix = 0;
-
-  while (
-    prefix < previousText.length &&
-    prefix < nextText.length &&
-    previousText[prefix] === nextText[prefix]
-  ) {
-    prefix++;
-  }
-
-  while (
-    suffix < previousText.length - prefix &&
-    suffix < nextText.length - prefix &&
-    previousText[previousText.length - 1 - suffix] ===
-      nextText[nextText.length - 1 - suffix]
-  ) {
-    suffix++;
-  }
-
-  const start = characters.slice(0, prefix);
-
-  const middle = nextText
-    .slice(prefix, nextText.length - suffix)
-    .map((letter, index) =>
-      createCharacter(letter, prefix + index)
-    );
-
-  const end = suffix
-    ? characters.slice(-suffix)
-    : [];
-
-  characters = [
-    ...start,
-    ...middle,
-    ...end
-  ];
-
-  previousText = nextText;
-
-  composition.replaceChildren(...characters);
-}
-
-input.addEventListener("input", () => {
-  updateTypography(input.value);
-});
-
-document.addEventListener("pointermove", event => {
-  if (
-    event.pointerType !== "mouse" &&
-    event.pointerType !== "pen"
-  ) {
-    return;
-  }
-
-  pointerX = event.clientX;
-  pointerY = event.clientY;
-
-  spotlight.style.left = `${pointerX}px`;
-  spotlight.style.top = `${pointerY}px`;
-  spotlight.style.opacity = "1";
-
-  if (pointerFrame === null) {
-    pointerFrame = requestAnimationFrame(
-      updateAmbientInteraction
-    );
-  }
-});
-
-document.addEventListener("pointerleave", () => {
-  spotlight.style.opacity = "0";
-
-  pointerX = -1000;
-  pointerY = -1000;
-
-  resetAmbient();
-});
-
-window.addEventListener("blur", () => {
-  spotlight.style.opacity = "0";
-  resetAmbient();
-});
-
-document.addEventListener("click", event => {
-  if (event.target.closest("#input-area")) {
-    return;
-  }
-
-  document.body.classList.toggle("light");
-
-  if (!document.body.classList.contains("light")) {
-    resetAmbient();
-  } else {
-    if (pointerFrame === null) {
-      pointerFrame = requestAnimationFrame(
-        updateAmbientInteraction
-      );
-    }
-  }
-});
-
-let resizeTimer = null;
-
-window.addEventListener("resize", () => {
-  clearTimeout(resizeTimer);
-
-  resizeTimer = setTimeout(() => {
-    createAmbient();
-  }, 180);
-});
-
-createAmbient();
-updateTypography("Hello World");
-
-document.fonts.ready.then(() => {
-  characters = [];
-  previousText = [];
-
-  updateTypography(input.value || "Hello World");
 });
 </script>
 
