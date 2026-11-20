@@ -2,425 +2,458 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Unscripted</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unscripted</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    :root {
-      --background: #050505;
-      --foreground: #f1eee8;
-      --input-background: #101010;
-      --input-border: rgba(255,255,255,0.24);
-      --placeholder: #777;
-      --spotlight-center: rgba(255,255,255,0.65);
-      --spotlight-edge: rgba(255,255,255,0.18);
-    }
+:root {
+  --background: #050505;
+  --foreground: #f1eee8;
+  --input-background: #101010;
+  --input-border: rgba(255,255,255,0.18);
+  --placeholder: #777;
+  --ambient-color: rgba(255,255,255,0.065);
+  --spotlight-center: rgba(255,255,255,0.65);
+  --spotlight-edge: rgba(255,255,255,0.18);
+}
 
-    body.light {
-      --background: #fafafa;
-      --foreground: #080808;
-      --input-background: #f4f4f4;
-      --input-border: rgba(0,0,0,0.20);
-      --placeholder: #777;
-      --spotlight-center: rgba(0,0,0,0.65);
-      --spotlight-edge: rgba(0,0,0,0.18);
-    }
+body.light {
+  --background: #fafafa;
+  --foreground: #080808;
+  --input-background: #f4f4f4;
+  --input-border: rgba(0,0,0,0.16);
+  --placeholder: #888;
+  --ambient-color: rgba(0,0,0,0.09);
+  --spotlight-center: rgba(0,0,0,0.65);
+  --spotlight-edge: rgba(0,0,0,0.18);
+}
 
-    html, body {
-      margin: 0;
-      min-height: 100%;
-    }
+html, body {
+  margin: 0;
+  min-height: 100%;
+}
 
-    body {
-      min-height: 100svh;
-      background: var(--background);
-      color: var(--foreground);
-      font-family: Arial, sans-serif;
-      transition: background 350ms ease, color 350ms ease;
-    }
+body {
+  min-height: 100svh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, sans-serif;
+  transition: background 350ms ease, color 350ms ease;
+}
 
-    /* Page layout */
+#ambient {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
 
-    main {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      padding: 6vh 6vw 7vh;
-    }
+.ambient-character {
+  position: absolute;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--ambient-color);
+  white-space: pre;
+  user-select: none;
+  transition: color 350ms ease;
+}
 
-    /* Top-left typography */
+main {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: 6vh 6vw 7vh;
+}
 
-    #stage {
-      flex: 1;
-      width: 100%;
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding-top: 3vh;
-      min-height: 0;
-      overflow: auto;
-    }
+#stage {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 3vh;
+  overflow: auto;
+}
 
-    #composition {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      align-content: flex-start;
-      justify-content: flex-start;
-      font-size: clamp(72px, 10vw, 170px);
-    }
+#composition {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  align-content: flex-start;
+  justify-content: flex-start;
+  font-size: clamp(36px, 5vw, 86px);
+}
 
-    .character {
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: baseline;
-      justify-content: center;
-      height: 1.5em;
-    }
+.character {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  height: 1.5em;
+}
 
-    .shape {
-      display: inline-block;
-      line-height: 1;
-      white-space: pre;
-      transform-origin: 50% 80%;
-      user-select: none;
-      animation: appear 180ms ease-out both;
-    }
+.shape {
+  display: inline-block;
+  line-height: 1;
+  white-space: pre;
+  transform-origin: 50% 80%;
+  user-select: none;
+  animation: appear 180ms ease-out both;
+}
 
-    .word-space {
-      width: 0.35em;
-    }
+.word-space {
+  width: 0.35em;
+}
 
-    .line-break {
-      flex-basis: 100%;
-      height: 0.25em;
-    }
+.line-break {
+  flex-basis: 100%;
+  height: 0.25em;
+}
 
-    /* Smaller input */
+#input-area {
+  width: min(520px, 100%);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
 
-    #input-area {
-      width: min(620px, 100%);
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
+#message {
+  display: block;
+  width: 100%;
+  height: 54px;
+  padding: 15px 18px;
+  background: var(--input-background);
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  color: var(--foreground);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  resize: none;
+  outline: none;
+  overflow-y: auto;
+  transition:
+    background 350ms ease,
+    border-color 350ms ease,
+    color 350ms ease;
+}
 
-    #message {
-      display: block;
-      width: 100%;
-      height: 58px;
-      padding: 17px 20px;
+#message::placeholder {
+  color: var(--placeholder);
+}
 
-      background: var(--input-background);
-      border: 1px solid var(--input-border);
-      border-radius: 6px;
+#message:focus {
+  border-color: var(--foreground);
+}
 
-      color: var(--foreground);
-      font-family: Arial, sans-serif;
-      font-size: 15px;
-      line-height: 22px;
+#spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(
+    circle,
+    var(--spotlight-center) 0%,
+    var(--spotlight-edge) 32%,
+    transparent 72%
+  );
+  filter: blur(13px);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
 
-      resize: none;
-      outline: none;
-      overflow-y: auto;
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
 
-      transition:
-        background 350ms ease,
-        border-color 350ms ease,
-        color 350ms ease;
-    }
+  #message {
+    cursor: text;
+  }
+}
 
-    #message::placeholder {
-      color: var(--placeholder);
-    }
+@media (pointer: coarse) {
+  #spotlight {
+    display: none;
+  }
+}
 
-    #message:focus {
-      border-color: var(--foreground);
-    }
+@keyframes appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-    /* Blurred spotlight cursor */
+@media (max-width: 600px) {
+  main {
+    padding: 5vh 5vw 6vh;
+  }
 
-    #spotlight {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
+  #composition {
+    font-size: clamp(32px, 7vw, 58px);
+  }
 
-      pointer-events: none;
-      z-index: 100;
+  #input-area {
+    width: 100%;
+  }
 
-      background: radial-gradient(
-        circle,
-        var(--spotlight-center) 0%,
-        var(--spotlight-edge) 32%,
-        transparent 72%
-      );
+  #message {
+    height: 50px;
+    padding: 13px 15px;
+  }
+}
 
-      filter: blur(13px);
-      transform: translate(-50%, -50%);
-      opacity: 0;
+@media (prefers-reduced-motion: reduce) {
+  .shape {
+    animation: none;
+  }
 
-      transition: opacity 180ms ease;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      body {
-        cursor: none;
-      }
-
-      #message {
-        cursor: text;
-      }
-    }
-
-    @keyframes appear {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @media (max-width: 600px) {
-      main {
-        padding: 5vh 5vw 6vh;
-      }
-
-      #composition {
-        font-size: clamp(58px, 13vw, 100px);
-      }
-
-      #input-area {
-        width: 100%;
-      }
-
-      #message {
-        height: 54px;
-        padding: 15px 16px;
-        font-size: 14px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .shape {
-        animation: none;
-      }
-
-      body, #message, #spotlight {
-        transition: none;
-      }
-    }
-  </style>
+  body, #message, #spotlight {
+    transition: none;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div id="spotlight" aria-hidden="true"></div>
+<div id="ambient" aria-hidden="true"></div>
+<div id="spotlight" aria-hidden="true"></div>
 
-  <main>
-    <section id="stage">
-      <div
-        id="composition"
-        aria-label="Generated typography"
-      ></div>
-    </section>
+<main>
+  <section id="stage">
+    <div id="composition" aria-label="Generated typography"></div>
+  </section>
 
-    <div id="input-area">
-      <textarea
-        id="message"
-        rows="1"
-        placeholder="Type something..."
-        aria-label="Type something"
-        spellcheck="false"
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-      ></textarea>
-    </div>
-  </main>
+  <div id="input-area">
+    <textarea
+      id="message"
+      rows="1"
+      placeholder="Type something..."
+      aria-label="Type something"
+      spellcheck="false"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+    ></textarea>
+  </div>
+</main>
 
-  <script>
-    const input = document.getElementById("message");
-    const composition = document.getElementById("composition");
-    const spotlight = document.getElementById("spotlight");
+<script>
+const input = document.getElementById("message");
+const composition = document.getElementById("composition");
+const spotlight = document.getElementById("spotlight");
+const ambient = document.getElementById("ambient");
 
-    const context = document
-      .createElement("canvas")
-      .getContext("2d");
+const context = document
+  .createElement("canvas")
+  .getContext("2d");
 
-    /* Typography settings */
+const fonts = [
+  { family: "Arial, sans-serif", weight: 400 },
+  { family: "Arial, sans-serif", weight: 900 },
+  { family: "Helvetica, Arial, sans-serif", weight: 300 },
+  { family: "Georgia, serif", weight: 400 },
+  { family: "Georgia, serif", weight: 700 },
+  { family: "'Times New Roman', serif", weight: 400 },
+  { family: "'Courier New', monospace", weight: 400 },
+  { family: "'Courier New', monospace", weight: 700 }
+];
 
-    const fonts = [
-      { family: "Arial, sans-serif", weight: 400 },
-      { family: "Arial, sans-serif", weight: 900 },
-      { family: "Helvetica, Arial, sans-serif", weight: 300 },
-      { family: "Georgia, serif", weight: 400 },
-      { family: "Georgia, serif", weight: 700 },
-      { family: "'Times New Roman', serif", weight: 400 },
-      { family: "'Courier New', monospace", weight: 400 },
-      { family: "'Courier New', monospace", weight: 700 }
-    ];
+const beats = [
+  { size: 0.90, width: 1.05, height: 0.95 },
+  { size: 1.15, width: 0.75, height: 1.35 },
+  { size: 0.85, width: 1.25, height: 0.85 },
+  { size: 1.25, width: 0.95, height: 1.15 }
+];
 
-    const beats = [
-      { size: 0.90, width: 1.05, height: 0.95 },
-      { size: 1.15, width: 0.75, height: 1.35 },
-      { size: 0.85, width: 1.25, height: 0.85 },
-      { size: 1.25, width: 0.95, height: 1.15 }
-    ];
+const ambientSymbols =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+  "abcdefghijklmnopqrstuvwxyz" +
+  "0123456789" +
+  "@#$%&*+-=/\\!?<>[]{}()";
 
-    const random = (min, max) =>
-      min + Math.random() * (max - min);
+const random = (min, max) =>
+  min + Math.random() * (max - min);
 
-    const pick = array =>
-      array[Math.floor(Math.random() * array.length)];
+const pick = array =>
+  array[Math.floor(Math.random() * array.length)];
 
-    let previousText = [];
-    let characters = [];
+let previousText = [];
+let characters = [];
 
-    /* Generate individual letterforms */
+function createAmbient() {
+  ambient.replaceChildren();
 
-    function createCharacter(letter, index) {
-      const element = document.createElement("span");
+  const fragment = document.createDocumentFragment();
 
-      if (letter === "\n") {
-        element.className = "line-break";
-        return element;
-      }
+  for (let i = 0; i < 60; i++) {
+    const element = document.createElement("span");
+    const font = pick(fonts);
 
-      if (/\s/u.test(letter)) {
-        element.className = "character word-space";
-        return element;
-      }
+    element.className = "ambient-character";
+    element.textContent = pick(Array.from(ambientSymbols));
 
-      const beat = beats[index % beats.length];
-      const font = pick(fonts);
+    element.style.left = `${random(2, 98)}%`;
+    element.style.top = `${random(2, 98)}%`;
+    element.style.fontFamily = font.family;
+    element.style.fontWeight = font.weight;
+    element.style.opacity = random(0.4, 1);
+    element.style.transform =
+      `rotate(${random(-25, 25)}deg)`;
 
-      const size = beat.size * random(0.85, 1.15);
-      const scaleX = beat.width * random(0.75, 1.25);
-      const scaleY = beat.height * random(0.85, 1.30);
+    fragment.appendChild(element);
+  }
 
-      const rotation = random(-4, 4);
-      const rise = random(-0.08, 0.08);
-      const italic = Math.random() < 0.25;
+  ambient.appendChild(fragment);
+}
 
-      const shape = document.createElement("span");
+function createCharacter(letter, index) {
+  const element = document.createElement("span");
 
-      element.className = "character";
-      shape.className = "shape";
-      shape.textContent = letter;
+  if (letter === "\n") {
+    element.className = "line-break";
+    return element;
+  }
 
-      shape.style.fontFamily = font.family;
-      shape.style.fontWeight = font.weight;
-      shape.style.fontStyle = italic ? "italic" : "normal";
-      shape.style.fontSize = `${size}em`;
+  if (/\s/u.test(letter)) {
+    element.className = "character word-space";
+    return element;
+  }
 
-      shape.style.transform = `
-        translateY(${rise}em)
-        rotate(${rotation}deg)
-        scale(${scaleX}, ${scaleY})
-      `;
+  const beat = beats[index % beats.length];
+  const font = pick(fonts);
 
-      element.appendChild(shape);
+  const size = beat.size * random(0.85, 1.15);
+  const scaleX = beat.width * random(0.75, 1.25);
+  const scaleY = beat.height * random(0.85, 1.30);
 
-      context.font =
-        `${italic ? "italic" : "normal"} ` +
-        `${font.weight} 100px ${font.family}`;
+  const rotation = random(-4, 4);
+  const rise = random(-0.08, 0.08);
+  const italic = Math.random() < 0.25;
 
-      const measured = context.measureText(letter).width;
+  const shape = document.createElement("span");
 
-      element.style.width =
-        `${Math.max(0.18, measured / 100 * size * scaleX + 0.05)}em`;
+  element.className = "character";
+  shape.className = "shape";
+  shape.textContent = letter;
 
-      return element;
-    }
+  shape.style.fontFamily = font.family;
+  shape.style.fontWeight = font.weight;
+  shape.style.fontStyle = italic ? "italic" : "normal";
+  shape.style.fontSize = `${size}em`;
 
-    /* Live typography update */
+  shape.style.transform = `
+    translateY(${rise}em)
+    rotate(${rotation}deg)
+    scale(${scaleX}, ${scaleY})
+  `;
 
-    function updateTypography(text) {
-      const nextText = Array.from(text || "Hello World");
+  element.appendChild(shape);
 
-      let prefix = 0;
-      let suffix = 0;
+  context.font =
+    `${italic ? "italic" : "normal"} ` +
+    `${font.weight} 100px ${font.family}`;
 
-      while (
-        prefix < previousText.length &&
-        prefix < nextText.length &&
-        previousText[prefix] === nextText[prefix]
-      ) {
-        prefix++;
-      }
+  const measured = context.measureText(letter).width;
 
-      while (
-        suffix < previousText.length - prefix &&
-        suffix < nextText.length - prefix &&
-        previousText[previousText.length - 1 - suffix] ===
-          nextText[nextText.length - 1 - suffix]
-      ) {
-        suffix++;
-      }
+  element.style.width =
+    `${Math.max(0.18, measured / 100 * size * scaleX + 0.05)}em`;
 
-      const start = characters.slice(0, prefix);
+  return element;
+}
 
-      const middle = nextText
-        .slice(prefix, nextText.length - suffix)
-        .map((letter, i) => createCharacter(letter, prefix + i));
+function updateTypography(text) {
+  const nextText = Array.from(text || "Hello World");
 
-      const end = suffix
-        ? characters.slice(-suffix)
-        : [];
+  let prefix = 0;
+  let suffix = 0;
 
-      characters = [...start, ...middle, ...end];
-      previousText = nextText;
+  while (
+    prefix < previousText.length &&
+    prefix < nextText.length &&
+    previousText[prefix] === nextText[prefix]
+  ) {
+    prefix++;
+  }
 
-      composition.replaceChildren(...characters);
-    }
+  while (
+    suffix < previousText.length - prefix &&
+    suffix < nextText.length - prefix &&
+    previousText[previousText.length - 1 - suffix] ===
+      nextText[nextText.length - 1 - suffix]
+  ) {
+    suffix++;
+  }
 
-    input.addEventListener("input", () => {
-      updateTypography(input.value);
-    });
+  const start = characters.slice(0, prefix);
 
-    /* Mouse-following spotlight */
+  const middle = nextText
+    .slice(prefix, nextText.length - suffix)
+    .map((letter, i) =>
+      createCharacter(letter, prefix + i)
+    );
 
-    document.addEventListener("pointermove", event => {
-      if (
-        event.pointerType !== "mouse" &&
-        event.pointerType !== "pen"
-      ) {
-        return;
-      }
+  const end = suffix
+    ? characters.slice(-suffix)
+    : [];
 
-      spotlight.style.left = `${event.clientX}px`;
-      spotlight.style.top = `${event.clientY}px`;
-      spotlight.style.opacity = "1";
-    });
+  characters = [...start, ...middle, ...end];
+  previousText = nextText;
 
-    document.addEventListener("pointerleave", () => {
-      spotlight.style.opacity = "0";
-    });
+  composition.replaceChildren(...characters);
+}
 
-    window.addEventListener("blur", () => {
-      spotlight.style.opacity = "0";
-    });
+input.addEventListener("input", () => {
+  updateTypography(input.value);
+});
 
-    /* Click anywhere except input to change theme */
+document.addEventListener("pointermove", event => {
+  if (
+    event.pointerType !== "mouse" &&
+    event.pointerType !== "pen"
+  ) {
+    return;
+  }
 
-    document.addEventListener("click", event => {
-      if (event.target.closest("#input-area")) {
-        return;
-      }
+  spotlight.style.left = `${event.clientX}px`;
+  spotlight.style.top = `${event.clientY}px`;
+  spotlight.style.opacity = "1";
+});
 
-      document.body.classList.toggle("light");
-    });
+document.addEventListener("pointerleave", () => {
+  spotlight.style.opacity = "0";
+});
 
-    /* Initial text */
+window.addEventListener("blur", () => {
+  spotlight.style.opacity = "0";
+});
 
-    updateTypography("Hello World");
-  </script>
+document.addEventListener("click", event => {
+  if (event.target.closest("#input-area")) {
+    return;
+  }
+
+  document.body.classList.toggle("light");
+});
+
+createAmbient();
+updateTypography("Hello World");
+</script>
 
 </body>
 </html>
