@@ -1,52 +1,45 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#050505">
   <title>Unscripted</title>
 
   <style>
-    /* ——— 页面 ——— */
-
     * {
       box-sizing: border-box;
     }
 
-    html {
+    html, body {
+      margin: 0;
+      min-height: 100%;
       background: #050505;
-      color-scheme: dark;
+      color: #f1eee8;
     }
 
     body {
-      margin: 0;
       min-height: 100svh;
-      background: #050505;
-      color: #eeeae2;
-      cursor: text;
+      font-family: Arial, sans-serif;
     }
 
-    /* 真正接收键盘输入的文本框，视觉上隐藏 */
-    #keyboard {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      border: 0;
-      opacity: 0;
-      font-size: 16px;
-      pointer-events: none;
+    main {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5vh 6vw 8vh;
     }
 
-    /* ——— 输入空间 ——— */
+    /* Central typography display */
 
-    #space {
-      min-height: 100svh;
-      padding: 15vh 7vw 18vh;
+    #stage {
+      flex: 1;
+      width: 100%;
+      min-height: 350px;
       display: flex;
       align-items: center;
+      justify-content: center;
     }
 
     #composition {
@@ -55,17 +48,17 @@
       flex-wrap: wrap;
       align-items: baseline;
       align-content: center;
-      gap: 0;
-      font-size: clamp(42px, 7.5vw, 112px);
+      justify-content: center;
+
+      font-size: clamp(72px, 10vw, 170px);
     }
 
-    /* 每个字母有自己的占位和视觉形态 */
     .character {
       flex: 0 0 auto;
       display: inline-flex;
       align-items: baseline;
       justify-content: center;
-      height: 1.65em;
+      height: 1.5em;
     }
 
     .shape {
@@ -78,67 +71,68 @@
     }
 
     .word-space {
-      width: .38em;
+      width: 0.35em;
     }
 
     .line-break {
       flex-basis: 100%;
-      height: .2em;
+      height: 0.25em;
     }
 
-    /* ——— 光标 ——— */
+    /* Input area */
 
-    #caret {
-      display: inline-block;
-      flex: 0 0 2px;
-      width: 2px;
-      height: .9em;
-      margin: 0 .1em;
-      background: #eeeae2;
-      align-self: baseline;
-      animation: blink 1.1s steps(1) infinite;
+    #input-area {
+      width: min(900px, 100%);
     }
 
-    body.unfocused #caret {
-      opacity: .2;
-      animation: none;
+    #message {
+      display: block;
+      width: 100%;
+      min-height: 88px;
+      padding: 28px;
+
+      background: #101010;
+      border: 1px solid #777;
+      border-radius: 16px;
+
+      color: #f1eee8;
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+
+      resize: vertical;
+      outline: none;
     }
 
-    /* 只在还没开始输入时出现 */
-    #hint {
-      position: fixed;
-      left: 7vw;
-      bottom: 30px;
-      margin: 0;
-      color: #626262;
-      font: 10px/1.5 Arial, sans-serif;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      pointer-events: none;
-      transition: opacity .4s ease;
+    #message::placeholder {
+      color: #777;
     }
 
-    body.has-text #hint {
-      opacity: 0;
-    }
-
-    @keyframes blink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
+    #message:focus {
+      border-color: #e5e2dc;
     }
 
     @keyframes appear {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     @media (max-width: 600px) {
-      #space {
-        padding: 12vh 6vw 18vh;
+      main {
+        padding: 4vh 5vw 6vh;
       }
 
-      #hint {
-        left: 6vw;
+      #composition {
+        font-size: clamp(58px, 13vw, 100px);
+      }
+
+      #message {
+        padding: 20px;
+        min-height: 72px;
       }
     }
 
@@ -146,111 +140,54 @@
       .shape {
         animation: none;
       }
-
-      #caret {
-        animation: none;
-      }
     }
   </style>
 </head>
 
 <body>
-  <textarea
-    id="keyboard"
-    aria-label="Type to create unpredictable letterforms"
-    autocomplete="off"
-    autocorrect="off"
-    autocapitalize="off"
-    spellcheck="false"
-    maxlength="1200"
-  ></textarea>
 
-  <main id="space" aria-label="Unscripted typing space">
-    <div id="composition" aria-hidden="true">
-      <span id="caret"></span>
+  <main>
+
+    <section id="stage">
+      <div id="composition" aria-label="Generated typography"></div>
+    </section>
+
+    <div id="input-area">
+      <textarea
+        id="message"
+        placeholder="Type something..."
+        aria-label="Type something"
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off"
+      ></textarea>
     </div>
+
   </main>
 
-  <p id="hint">Click anywhere. Type something.</p>
-
   <script>
-    const keyboard = document.getElementById("keyboard");
+    const input = document.getElementById("message");
     const composition = document.getElementById("composition");
-    const caret = document.getElementById("caret");
 
-    const measuringCanvas = document.createElement("canvas");
-    const context = measuringCanvas.getContext("2d");
-
-    /*
-      可调整的设置：
-
-      symbolChance:
-      输入字母后，变成意外符号的概率。
-      0 = 永远保留原字母
-      0.12 = 约 12% 的字母会被替换
-    */
-
-    const settings = {
-      symbolChance: 0.12
-    };
+    const context = document.createElement("canvas").getContext("2d");
 
     const fonts = [
-      {
-        family: 'Arial, Helvetica, sans-serif',
-        weight: 400
-      },
-      {
-        family: 'Arial, Helvetica, sans-serif',
-        weight: 900
-      },
-      {
-        family: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-        weight: 300
-      },
-      {
-        family: 'Georgia, "Times New Roman", serif',
-        weight: 400
-      },
-      {
-        family: 'Georgia, "Times New Roman", serif',
-        weight: 700
-      },
-      {
-        family: '"Times New Roman", Times, serif',
-        weight: 400
-      },
-      {
-        family: '"Courier New", Courier, monospace',
-        weight: 400
-      },
-      {
-        family: '"Courier New", Courier, monospace',
-        weight: 700
-      }
+      { family: "Arial, sans-serif", weight: 400 },
+      { family: "Arial, sans-serif", weight: 900 },
+      { family: "Helvetica, Arial, sans-serif", weight: 300 },
+      { family: "Georgia, serif", weight: 400 },
+      { family: "Georgia, serif", weight: 700 },
+      { family: "'Times New Roman', serif", weight: 400 },
+      { family: "'Courier New', monospace", weight: 400 },
+      { family: "'Courier New', monospace", weight: 700 }
     ];
-
-    const symbols = [
-      "○", "●", "◇", "△", "□",
-      "+", "×", "/", ":", "*", "~"
-    ];
-
-    /*
-      四拍结构：
-      轻 → 高 → 收缩 → 重
-
-      每一拍内部再随机变化，
-      让画面有规律，又不会完全重复。
-    */
 
     const beats = [
-      { size: 0.85, width: 1.04, height: 0.94 },
-      { size: 1.00, width: 0.80, height: 1.22 },
-      { size: 0.76, width: 1.18, height: 0.84 },
-      { size: 1.16, width: 0.95, height: 1.08 }
+      { size: 0.90, width: 1.05, height: 0.95 },
+      { size: 1.15, width: 0.75, height: 1.35 },
+      { size: 0.85, width: 1.25, height: 0.85 },
+      { size: 1.25, width: 0.95, height: 1.15 }
     ];
-
-    let characters = [];
-    let previousText = [];
 
     const random = (min, max) =>
       min + Math.random() * (max - min);
@@ -258,73 +195,70 @@
     const pick = array =>
       array[Math.floor(Math.random() * array.length)];
 
-    function createCharacter(source, index) {
-      if (source === "\n") {
-        const element = document.createElement("span");
-        element.className = "line-break";
+    let previousText = [];
+    let characters = [];
 
-        return { source, element };
+    function createCharacter(letter, index) {
+      const element = document.createElement("span");
+
+      if (letter === "\n") {
+        element.className = "line-break";
+        return element;
       }
 
-      if (/\s/u.test(source)) {
-        const element = document.createElement("span");
+      if (/\s/u.test(letter)) {
         element.className = "character word-space";
-
-        return { source, element };
+        return element;
       }
 
       const beat = beats[index % beats.length];
       const font = pick(fonts);
 
-      // 只替换字母和数字，标点保留。
-      const canReplace = /[\p{L}\p{N}]/u.test(source);
-      const replace =
-        canReplace && Math.random() < settings.symbolChance;
+      const size = beat.size * random(0.85, 1.15);
+      const scaleX = beat.width * random(0.75, 1.25);
+      const scaleY = beat.height * random(0.85, 1.30);
 
-      const visibleCharacter = replace ? pick(symbols) : source;
+      const rotation = random(-4, 4);
+      const rise = random(-0.08, 0.08);
+      const italic = Math.random() < 0.25;
 
-      const size = beat.size * random(0.88, 1.13);
-      const scaleX = beat.width * random(0.83, 1.16);
-      const scaleY = beat.height * random(0.86, 1.16);
-      const rise = random(-0.06, 0.06);
-      const italic = Math.random() < 0.20;
-
-      const element = document.createElement("span");
       const shape = document.createElement("span");
 
       element.className = "character";
       shape.className = "shape";
-      shape.textContent = visibleCharacter;
+
+      shape.textContent = letter;
 
       shape.style.fontFamily = font.family;
       shape.style.fontWeight = font.weight;
       shape.style.fontStyle = italic ? "italic" : "normal";
       shape.style.fontSize = `${size}em`;
-      shape.style.transform =
-        `translateY(${rise}em) scale(${scaleX}, ${scaleY})`;
+
+      shape.style.transform = `
+        translateY(${rise}em)
+        rotate(${rotation}deg)
+        scale(${scaleX}, ${scaleY})
+      `;
 
       element.appendChild(shape);
 
-      // 使用统一测量字号，把宽度换算为 em，
-      // 页面缩放后仍然保持相同的比例。
       context.font =
         `${italic ? "italic" : "normal"} ` +
         `${font.weight} 100px ${font.family}`;
 
-      const measured = context.measureText(visibleCharacter).width;
-      const width = measured / 100 * size * scaleX;
+      const measured = context.measureText(letter).width;
 
-      element.style.width = `${Math.max(0.18, width + 0.07)}em`;
+      element.style.width =
+        `${Math.max(0.18, measured / 100 * size * scaleX + 0.05)}em`;
 
-      return { source, element };
+      return element;
     }
 
-    function update() {
-      const nextText = Array.from(keyboard.value);
+    function updateTypography(text) {
+      const nextText = Array.from(text || "Hello World");
 
-      // 保留未被编辑的字母造型。
-      // 新输入的部分才会生成新的随机结果。
       let prefix = 0;
+      let suffix = 0;
 
       while (
         prefix < previousText.length &&
@@ -333,8 +267,6 @@
       ) {
         prefix++;
       }
-
-      let suffix = 0;
 
       while (
         suffix < previousText.length - prefix &&
@@ -345,112 +277,28 @@
         suffix++;
       }
 
-      const keptStart = characters.slice(0, prefix);
-      const keptEnd = suffix
-        ? characters.slice(characters.length - suffix)
+      const start = characters.slice(0, prefix);
+
+      const middle = nextText
+        .slice(prefix, nextText.length - suffix)
+        .map((letter, i) => createCharacter(letter, prefix + i));
+
+      const end = suffix
+        ? characters.slice(-suffix)
         : [];
 
-      const newCharacters = nextText
-        .slice(prefix, nextText.length - suffix)
-        .map((character, index) =>
-          createCharacter(character, prefix + index)
-        );
-
-      characters = [
-        ...keptStart,
-        ...newCharacters,
-        ...keptEnd
-      ];
-
+      characters = [...start, ...middle, ...end];
       previousText = nextText;
 
-      composition.replaceChildren(
-        ...characters.map(character => character.element),
-        caret
-      );
-
-      document.body.classList.toggle(
-        "has-text",
-        nextText.length > 0
-      );
-
-      requestAnimationFrame(() => {
-        caret.scrollIntoView({
-          block: "nearest",
-          inline: "nearest",
-          behavior: "auto"
-        });
-      });
+      composition.replaceChildren(...characters);
     }
 
-    function focusTyping() {
-      keyboard.focus({ preventScroll: true });
-
-      // 当前原型采用末尾输入，光标始终位于最后。
-      const end = keyboard.value.length;
-      keyboard.setSelectionRange(end, end);
-    }
-
-    document.getElementById("space").addEventListener(
-      "click",
-      focusTyping
-    );
-
-    keyboard.addEventListener("focus", () => {
-      document.body.classList.remove("unfocused");
+    input.addEventListener("input", () => {
+      updateTypography(input.value);
     });
 
-    keyboard.addEventListener("blur", () => {
-      document.body.classList.add("unfocused");
-    });
-
-    keyboard.addEventListener("input", event => {
-      if (!event.isComposing) update();
-    });
-
-    keyboard.addEventListener("compositionend", update);
-
-    // 将可见光标与实际输入位置保持一致。
-    keyboard.addEventListener("keydown", event => {
-      if (event.isComposing) return;
-
-      if ([
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowUp",
-        "ArrowDown",
-        "Home",
-        "End",
-        "PageUp",
-        "PageDown"
-      ].includes(event.key)) {
-        event.preventDefault();
-      }
-    });
-
-    // 支持重新聚焦后直接继续打字。
-    // 不拦截 Command / Control 等浏览器快捷键。
-    document.addEventListener("keydown", event => {
-      if (
-        document.activeElement === keyboard ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.altKey ||
-        event.key === "Tab"
-      ) {
-        return;
-      }
-
-      if (
-        event.key.length === 1 ||
-        event.key === "Enter" ||
-        event.key === "Backspace"
-      ) {
-        focusTyping();
-      }
-    });
-
-    focusTyping();
+    updateTypography("Hello World");
   </script>
+
 </body>
-</html> 
+</html>
